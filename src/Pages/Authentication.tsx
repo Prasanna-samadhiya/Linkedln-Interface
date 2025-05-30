@@ -1,4 +1,3 @@
-import Register from '../Components/Auth/Register';
 import AuthLayout from '../Layout/AuthLayout'
 import { ScreenWrapper } from '../Components/Appstyle';
 
@@ -10,8 +9,6 @@ function Auth(props: Props) {
     return (
         <AuthLayout>
             <ScreenWrapper>
-                <h1>Linkedln</h1>
-            <Register/>
             </ScreenWrapper>
         </AuthLayout>
     )

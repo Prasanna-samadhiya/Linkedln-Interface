@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { RegisterCard,ScreenWrapper,StyledInput, SubmitButton } from "../Appstyle"
 import AuthLayout from "../../Layout/AuthLayout"
 import { useEffect, useState } from "react"
+import axios from "axios"
+import { Alert } from "@mui/material"
 
 interface Props {}
 
@@ -15,6 +17,7 @@ function Register(props: Props) {
     }
     const [Rdata,SetRdata] = useState<Registerdata>({name:"",email:"",password:"",cpassword:""})
     const [err,seterr] = useState<string>()
+    const [registered,setregistered] = useState<boolean>()
 
     useEffect(()=>{
         console.log(typeof Rdata.name)
@@ -41,17 +44,30 @@ function Register(props: Props) {
         console.log(Rdata)
     }
 
+    const navigate = useNavigate();
+
+    const Handleclick = ()=>{
+            axios.post("http://localhost:3000/auth/register",Rdata,{withCredentials:true}).then((result)=>{
+                console.log(result);
+                setregistered(true);
+                navigate("/verify");
+            }).catch((err)=>{
+                console.log(err)
+            })
+        }
+
     return (
         <div>
             <AuthLayout>
               <ScreenWrapper>
+               <div>{registered?<Alert>Registered</Alert>:null}</div>
              <RegisterCard>
                 <h1>Register</h1>
                 <div>Name:<StyledInput onChange={HandleChange} name="name"></StyledInput></div>
                 <div>Email:<StyledInput onChange={HandleChange} name="email"></StyledInput></div>
                 <div>Password:<StyledInput onChange={HandleChange} name="password"></StyledInput></div>
                 <div>Confirm Password:<StyledInput onChange={HandleChange} name="cpassword"></StyledInput></div>
-                <SubmitButton>Register</SubmitButton>
+                <SubmitButton onClick={Handleclick}>Register</SubmitButton>
                 Alredy registered log in <Link to="/Login">Here</Link>
                 <div style={{color:"red",textAlign:"center",padding:"4px"}}>{err}</div>
              </RegisterCard>
