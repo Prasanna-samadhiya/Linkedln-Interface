@@ -6,6 +6,8 @@ import Verify from './Components/Auth/Verifyemail';
 import Navbar from './Components/Navbar/Navbar';
 import Home from './Components/Home/Home';
 import Profile from './Components/Profilepage/Profile';
+import Forget from './Components/Auth/ForgetPass';
+import CreateNewPassword from './Components/Auth/CreateNewPassword';
 
 
 const App: React.FC = () => {
@@ -19,6 +21,8 @@ const App: React.FC = () => {
            <Route path='/Login' element={<Login/>}/>
            <Route path='/Verify' element={<Verify/>}/>
            <Route path='/profile' element={<Profile/>}/>
+           <Route path='/forgot' element={<Forget/>}/>
+           <Route path='/cpass' element={<CreateNewPassword/>}/>
          </Routes>
       </BrowserRouter>
       </div>

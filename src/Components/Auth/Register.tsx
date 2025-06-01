@@ -47,6 +47,7 @@ function Register(props: Props) {
     const navigate = useNavigate();
 
     const Handleclick = ()=>{
+         if(err==""){
             axios.post("http://localhost:3000/auth/register",Rdata,{withCredentials:true}).then((result)=>{
                 console.log(result);
                 setregistered(true);
@@ -54,6 +55,9 @@ function Register(props: Props) {
             }).catch((err)=>{
                 console.log(err)
             })
+        }else{
+            console.log("has error");
+        }
         }
 
     return (
@@ -68,7 +72,7 @@ function Register(props: Props) {
                 <div>Password:<StyledInput onChange={HandleChange} name="password"></StyledInput></div>
                 <div>Confirm Password:<StyledInput onChange={HandleChange} name="cpassword"></StyledInput></div>
                 <SubmitButton onClick={Handleclick}>Register</SubmitButton>
-                Alredy registered log in <Link to="/Login">Here</Link>
+                <div>Alredy registered log in <Link to="/Login">Here</Link></div>
                 <div style={{color:"red",textAlign:"center",padding:"4px"}}>{err}</div>
              </RegisterCard>
              </ScreenWrapper>

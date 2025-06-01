@@ -18,10 +18,13 @@ function Verify(props: Props) {
 
         const [Vata,SetVata] = useState<Vdata>({email:"",otp:""})
         const [verified,setverified] = useState<boolean>(false)
+        const [err,seterr] = useState<string>("")
         const navigate = useNavigate();
 
         useEffect(()=>{
-            
+            if(Vata.email==""||Vata.otp==""){
+               seterr("Fields are empty")
+            }
         },[])
     
         const HandleChange =(e:any)=>{
@@ -30,6 +33,7 @@ function Verify(props: Props) {
         console.log(Vata)
 
         const Handleclick = ()=>{
+            if(err==""){
             axios.post("http://localhost:3000/auth/verifyotp",Vata,{withCredentials:true}).then((result)=>{
                 console.log(result);
                 setverified(true)
@@ -37,6 +41,9 @@ function Verify(props: Props) {
             }).catch((err)=>{
                 console.log(err)
             })
+        }else{
+            console.log("err occured")
+        }
         }
 
     return (
@@ -45,7 +52,6 @@ function Verify(props: Props) {
                 <div>{verified?<Alert>Email Verified</Alert>:null}</div>
              <RegisterCard>
                 <h1>Verify Email</h1>
-                <div>Email:<StyledInput onChange={HandleChange} name="email"></StyledInput></div>
                 <div>OTP:<StyledInput onChange={HandleChange} name="otp"></StyledInput></div>
                 <SubmitButton onClick={Handleclick}>Verify</SubmitButton>
                 Already Verified? click <Link to="/Login">Here</Link>
