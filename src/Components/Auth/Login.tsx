@@ -1,65 +1,67 @@
-import { Link } from "react-router-dom"
-import { RegisterCard,ScreenWrapper,StyledInput, SubmitButton } from "../Appstyle"
+import { Link, useNavigate } from "react-router-dom"
+import { RegisterCard, ScreenWrapper, StyledInput, SubmitButton } from "./Appstyle"
 import AuthLayout from "../../Layout/AuthLayout"
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Alert } from "@mui/material";
+import { loggedinSuccess } from "../../Redux/Slices/AuthSlice";
+import { useDispatch } from "react-redux";
 
-interface Props {}
+function Login() {
 
-function Login(props: Props) {
-    const {} = props
-
-    
-    interface Logindata {
-            email:string;
-            password:string;
+    interface LoginDataType {
+        email: string;
+        password: string;
     }
 
-        const [Lata,SetLata] = useState<Logindata>({email:"",password:""})
-        const [err,seterr] = useState<string>("")
-        const [loggedin,setlogged] = useState<boolean>(false)
+    const [LoginData, SetLdata] = useState<LoginDataType>({ email: "", password: "" })
+    const [Err, SetErr] = useState<string>("")
+    const [LoggedIn, SetLogged] = useState<boolean>(false)
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
-        useEffect(()=>{
-            if(Lata.email==""||Lata.password==""){
-               seterr("Fields are empty")
-            }else if(!Lata.email.includes("@gmail.com")){
-               seterr("Invalid email")
-            }else{
-                seterr("")
-            }
-        },[Lata])
-    
-        const HandleChange =(e:any)=>{
-            SetLata({...Lata,[e.target.name]:e.target.value})
-            console.log(Lata)
+    useEffect(() => {
+        if (LoginData.email == "" || LoginData.password == "") {
+            SetErr("Fields are empty")
+        } else if (!LoginData.email.includes("@gmail.com")) {
+            SetErr("Invalid email")
+        } else {
+            SetErr("")
         }
+    }, [LoginData])
 
-        const Handleclick = ()=>{
-            if(err==""){
-            axios.post("http://localhost:3000/auth/login",Lata,{withCredentials:true}).then((result)=>{
+    const HandleChange = (e: any) => {
+        SetLdata({ ...LoginData, [e.target.name]: e.target.value })
+        console.log(LoginData)
+    }
+
+    const HandleClick = () => {
+        if (Err == "") {
+            axios.post("http://localhost:3000/auth/login", LoginData, { withCredentials: true }).then((result) => {
                 console.log(result);
-                setlogged(true)
-            }).catch((err)=>{
+                SetLogged(true);
+                dispatch(loggedinSuccess({User:{LoggedIn:true,User:result.data.user},Link:result.data.link}));
+                navigate("/profile");
+            }).catch((err) => {
                 console.log(err)
             })
-            }
         }
+    }
 
     return (
         <AuthLayout>
-              <ScreenWrapper>
-                <div>{loggedin?<Alert>Logged In</Alert>:null}</div>
-             <RegisterCard>
-                <h1>Login</h1>
-                <div>Email:<StyledInput onChange={HandleChange} name="email"></StyledInput></div>
-                <div>Password:<StyledInput onChange={HandleChange} name="password"></StyledInput></div>
-                <SubmitButton onClick={Handleclick}>Login</SubmitButton>
-                <div>Do not have a account click <Link to="/Register">Here</Link></div>
-                <div>Forgot your password click <Link to="/forgot">Here</Link></div>
-                <div style={{color:"red",textAlign:"center",padding:"4px"}}>{err}</div>
-             </RegisterCard>
-             </ScreenWrapper>
+            <ScreenWrapper>
+                <div>{LoggedIn ? <Alert>Logged In</Alert> : null}</div>
+                <RegisterCard>
+                    <h1>Login</h1>
+                    <div>Email:<StyledInput onChange={HandleChange} name="email"></StyledInput></div>
+                    <div>Password:<StyledInput onChange={HandleChange} name="password"></StyledInput></div>
+                    <SubmitButton onClick={HandleClick}>Login</SubmitButton>
+                    <div>Do not have a account click <Link to="/Register">Here</Link></div>
+                    <div>Forgot your password click <Link to="/forgot">Here</Link></div>
+                    <div style={{ color: "red", textAlign: "center", padding: "4px" }}>{Err}</div>
+                </RegisterCard>
+            </ScreenWrapper>
         </AuthLayout>
     )
 }

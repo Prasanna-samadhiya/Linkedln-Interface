@@ -1,58 +1,55 @@
 import { useEffect, useState } from 'react'
 import AuthLayout from '../../Layout/AuthLayout'
-import { RegisterCard, ScreenWrapper, StyledInput, SubmitButton } from '../Appstyle'
+import { RegisterCard, ScreenWrapper, StyledInput, SubmitButton } from './Appstyle'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-interface Props {}
-
-function Forget(props: Props) {
-    const {} = props
-
-    const [email,setemail] = useState<string>("")
-    const [err,seterr] = useState<string>("")
+function Forget() {
+    
+    const [Email, SetEmail] = useState<string>("")
+    const [Err, SetErr] = useState<string>("")
 
     const navigate = useNavigate()
 
-    useEffect(()=>{
-         if(email==""){
-            seterr("Fields are empty")
-         }else if(!email.includes("@gmail.com")){
-            seterr("Enter valid email")
-         }else{
-            seterr("")
-         }
-    },[email])
-
-    const HandleChange =(e:any)=>{
-            setemail(e.target.value)
-            console.log(email)
+    useEffect(() => {
+        if (Email == "") {
+            SetErr("Fields are empty")
+        } else if (!Email.includes("@gmail.com")) {
+            SetErr("Enter valid email")
+        } else {
+            SetErr("")
         }
+    }, [Email])
 
-     const Handleclick = ()=>{
-            if(err==""){
-            axios.post("http://localhost:3000/auth/forget",{email:email},{withCredentials:true}).then((result)=>{
-                const params = new URLSearchParams({token:result.data.user.token});
+    const HandleChange = (e: any) => {
+        SetEmail(e.target.value)
+        console.log(Email)
+    }
+
+    const Handleclick = () => {
+        if (Err == "") {
+            axios.post("http://localhost:3000/auth/forget", { email: Email }, { withCredentials: true }).then((result) => {
+                const params = new URLSearchParams({ token: result.data.user.token });
                 console.log(result.data.user.token);
                 navigate(`/cpass?${params.toString()}`);
-                
-            }).catch((err)=>{
+
+            }).catch((err) => {
                 console.log(err)
             })
-            }
         }
+    }
 
     return (
         <AuthLayout>
-              <ScreenWrapper>
-             <RegisterCard>
-                <h1>Forgot Password</h1>
-                <div>Email:<StyledInput onChange={HandleChange} name="email"></StyledInput></div>
-                <SubmitButton onClick={Handleclick}>Login</SubmitButton>
-                <div>Do not have a account click <Link to="/Register">Here</Link></div>
-                <div style={{color:"red",textAlign:"center",padding:"4px"}}>{err}</div>
-             </RegisterCard>
-             </ScreenWrapper>
+            <ScreenWrapper>
+                <RegisterCard>
+                    <h1>Forgot Password</h1>
+                    <div>Email:<StyledInput onChange={HandleChange} name="email"></StyledInput></div>
+                    <SubmitButton onClick={Handleclick}>Send OTP</SubmitButton>
+                    <div>Do not have a account click <Link to="/Register">Here</Link></div>
+                    <div style={{ color: "red", textAlign: "center", padding: "4px" }}>{Err}</div>
+                </RegisterCard>
+            </ScreenWrapper>
         </AuthLayout>
     )
 }

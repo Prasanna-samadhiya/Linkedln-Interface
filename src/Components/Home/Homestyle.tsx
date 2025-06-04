@@ -6,8 +6,8 @@ const HomeCard = styled(Card)({
   maxWidth: '480px',
   padding: '36px 28px',
   borderRadius: '16px',
-  backgroundColor: '#ffffff',
-  boxShadow: '0 6px 24px rgba(0,0,0,0.08)',
+  backgroundColor: 'var(--card-bg)',
+  boxShadow: `0 6px 24px var(--card-shadow)`,
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -18,12 +18,12 @@ const HomeHeading = styled(Typography)({
   fontSize: '24px',
   fontWeight: 700,
   marginBottom: '12px',
-  color: '#0a66c2',
+  color: 'var(--primary-color)',
 });
 
 const HomeSubtext = styled(Typography)({
   fontSize: '16px',
-  color: '#555',
+  color: 'var(--text-color-secondary)',
   marginBottom: '24px',
 });
 
@@ -34,4 +34,4 @@ const ButtonGroup = styled('div')({
   justifyContent: 'space-around',
 });
 
-export {ButtonGroup,HomeSubtext,HomeHeading,HomeCard}
+export { ButtonGroup, HomeSubtext, HomeHeading, HomeCard };

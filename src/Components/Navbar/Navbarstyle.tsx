@@ -2,10 +2,10 @@ import { styled } from '@mui/material/styles';
 import { AppBar, Toolbar, Button, IconButton, Typography } from '@mui/material';
 
 const StyledAppBar = styled(AppBar)({
-  backgroundColor: '#ffffff',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
+  backgroundColor: 'var(--appbar-bg)',
+  boxShadow: `0 2px 8px var(--appbar-shadow)`,
   padding: '0 16px',
-  color: '#0a66c2',
+  color: 'var(--text-color-primary)',
   position: 'sticky',
   top: 0,
   zIndex: 1100,
@@ -22,7 +22,7 @@ const StyledToolbar = styled(Toolbar)({
 const Logo = styled(Typography)({
   fontWeight: 'bold',
   fontSize: '20px',
-  color: '#0a66c2',
+  color: 'var(--text-color-primary)',
   textDecoration: 'none',
   cursor: 'pointer',
 });
@@ -39,12 +39,12 @@ const NavButton = styled(Button)({
   padding: '6px 14px',
   borderRadius: '6px',
   fontSize: '14px',
-  color: '#0a66c2',
-  border: '1px solid #0a66c2',
+  color: 'var(--text-color-primary)',
+  border: '1px solid var(--primary-color)',
   backgroundColor: 'transparent',
   '&:hover': {
-    backgroundColor: '#eaf4fe',
-    borderColor: '#0a66c2',
+    backgroundColor: 'var(--primary-color-light)',
+    borderColor: 'var(--primary-color)',
   },
 });
 
@@ -54,16 +54,16 @@ const PrimaryButton = styled(Button)({
   padding: '6px 14px',
   borderRadius: '6px',
   fontSize: '14px',
-  color: '#fff',
-  backgroundColor: '#0a66c2',
+  color: 'var(--text-color-light)',
+  backgroundColor: 'var(--primary-color)',
   '&:hover': {
-    backgroundColor: '#004182',
+    backgroundColor: 'var(--primary-color-hover)',
   },
 });
 
 const MenuIconButton = styled(IconButton)({
   display: 'none',
-  '@media (max-width: 768px)': {
+  '@media (max-width: 100px)': {
     display: 'inline-flex',
   },
 });

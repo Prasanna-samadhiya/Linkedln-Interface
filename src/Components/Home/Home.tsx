@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ScreenWrapper, SubmitButton } from '../Appstyle';
+import { ScreenWrapper, SubmitButton } from '../Auth/Appstyle';
 import { HomeCard, HomeHeading, HomeSubtext } from './Homestyle';
 import { ButtonGroup } from '@mui/material';
 

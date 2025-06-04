@@ -1,0 +1,36 @@
+:root {
+  --primary-color: #0a66c2;
+  --primary-color-hover: #004182;
+  --primary-color-light: #eaf4fe;
+
+  --danger-color: red;
+  --danger-hover: #c40000;
+
+  --input-bg: #f9f9f9;
+  --input-border: #ccc;
+
+  --text-color-default: #333;
+  --text-color-secondary: #555;
+  --text-color-dark: #555;
+  --text-color-black: #333;
+  --text-color-primary: #0a66c2;
+  --text-color-light: #fff;
+
+  --card-bg: #ffffff;
+
+  --screen-bg-start: #f0f4f8;
+  --screen-bg-end: #d9e2ec;
+
+  --background-light: #ffffff;
+  --background-lighter: #f0f4f8;
+  --background-soft: #e6f0f8;
+
+  --card-shadow: rgba(0, 0, 0, 0.08);
+
+  --shadow-light: rgba(0, 0, 0, 0.04);
+  --shadow-medium: rgba(0, 0, 0, 0.05);
+  --shadow-strong: rgba(0, 0, 0, 0.06);
+
+  --appbar-bg: #ffffff;
+  --appbar-shadow: rgba(0, 0, 0, 0.06);
+}

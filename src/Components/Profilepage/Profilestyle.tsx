@@ -1,127 +1,106 @@
-import { styled } from '@mui/material/styles';
-import { Card, Button, Typography, Avatar } from '@mui/material';
+// ProfileStyles.tsx
+import { Avatar, Box, Button, styled, Typography } from '@mui/material';
 
-// Top-level wrapper
-const ProfileContainer = styled('div')({
-  width: '100%',
-  maxWidth: '900px',
-  margin: '0 auto',
-  padding: '20px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '20px',
+export const Container = styled(Box)({
+  backgroundColor: 'var(--screen-bg-start)',
+  minHeight: '100vh',
 });
 
-// Header banner
-const ProfileHeader = styled('div')({
+export const CoverPhoto = styled(Avatar)({
+  height: 200,
+  backgroundColor: 'var(--background-soft)',
   position: 'relative',
-  height: '200px',
-  backgroundColor: '#e6f0f8',
-  borderRadius: '8px',
-  overflow: 'hidden',
+  borderRadius: 0
 });
 
-// Avatar over the banner
-const ProfileAvatar = styled(Avatar)({
-  width: '120px',
-  height: '120px',
-  border: '4px solid white',
-  position: 'relative',
-  bottom: '-60px',
-  left: '30px',
-  zIndex: 2,
-});
-
-// Info container below avatar
-const ProfileInfo = styled(Card)({
-  marginTop: '60px',
-  padding: '20px',
-  borderRadius: '8px',
-  backgroundColor: '#ffffff',
-  boxShadow: '0 4px 12px rgba(0, 0, 0, 0.06)',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-});
-
-// Name + Title
-const ProfileName = styled(Typography)({
-  fontWeight: 700,
-  fontSize: '22px',
-  color: '#0a66c2',
-});
-
-const ProfileTitle = styled(Typography)({
-  fontSize: '16px',
-  color: '#555',
-});
-
-// Buttons (e.g., Connect, Message)
-const ProfileButtonGroup = styled('div')({
-  display: 'flex',
-  gap: '12px',
-  marginTop: '10px',
-});
-
-const ConnectButton = styled(Button)({
+export const EditCoverButton = styled(Button)({
+  position: 'absolute',
+  top: 10,
+  right: 10,
+  backgroundColor: 'var(--background-light)',
+  boxShadow: '0 2px 5px var(--shadow-medium)',
   textTransform: 'none',
-  fontWeight: 600,
-  padding: '8px 20px',
-  borderRadius: '6px',
-  color: '#fff',
-  backgroundColor: '#0a66c2',
+  color: 'var(--text-color-black)',
+});
+
+export const AvatarWrapper = styled(Box)({
+  position: 'relative',
+  width: 'fit-content',
+  marginLeft: 30,
+  marginTop: -50,
+});
+
+export const EditAvatarIcon = styled(Box)({
+  position: 'absolute',
+  bottom: 0,
+  right: 0,
+  backgroundColor: 'var(--background-light)',
+  borderRadius: '50%',
+  boxShadow: '0 2px 5px var(--shadow-medium)',
+  width: '32px',
+  height: '32px',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  cursor: 'pointer',
+});
+
+export const ProfileInfoSection = styled(Box)({
+  backgroundColor: 'var(--background-light)',
+  paddingTop: 120, // space between avatar and info
+  paddingBottom: 20,
+  paddingLeft: 30,
+  paddingRight: 30,
+  marginTop: -60,
+  borderRadius: '0 0 12px 12px',
+  boxShadow: '0 4px 12px var(--shadow-strong)',
+});
+
+export const ButtonsRow = styled(Box)({
+  marginTop: 15,
+  display: 'flex',
+  gap: 10,
+});
+
+export const ConnectButton = styled(Button)({
+  textTransform: 'none',
+  backgroundColor: 'var(--primary-color)',
+  color: 'var(--text-color-light)',
   '&:hover': {
-    backgroundColor: '#004182',
+    backgroundColor: 'var(--primary-color-hover)',
   },
 });
 
-const MessageButton = styled(Button)({
+export const MessageButton = styled(Button)({
   textTransform: 'none',
-  fontWeight: 600,
-  padding: '8px 20px',
-  borderRadius: '6px',
-  color: '#0a66c2',
-  border: '1px solid #0a66c2',
-  backgroundColor: '#ffffff',
+  color: 'var(--primary-color)',
+  borderColor: 'var(--primary-color)',
   '&:hover': {
-    backgroundColor: '#eaf4fe',
+    backgroundColor: 'var(--primary-color-light)',
   },
 });
 
-// Bio/About section
-const ProfileAbout = styled(Card)({
+export const SectionCard = styled(Box)({
+  backgroundColor: 'var(--background-light)',
   padding: '20px',
-  borderRadius: '8px',
-  backgroundColor: '#ffffff',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.04)',
+  margin: '20px 30px',
+  borderRadius: '10px',
+  boxShadow: '0 2px 5px var(--shadow-light)',
 });
 
-const AboutHeading = styled(Typography)({
-  fontWeight: 600,
+export const SectionTitle = styled(Typography)({
+  display: 'flex',
+  flexDirection: 'row',
+  gap: '100px',
   fontSize: '18px',
+  fontWeight: 600,
   marginBottom: '10px',
+  color: 'var(--text-color-default)',
 });
 
-// Experience or content card
-const ExperienceCard = styled(Card)({
-  padding: '16px',
-  borderRadius: '8px',
-  backgroundColor: '#fff',
-  boxShadow: '0 1px 4px rgba(0,0,0,0.05)',
-  marginTop: '10px',
+export const SectionContent = styled(Box)({
+  color: 'var(--text-color-secondary)',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '6px',
 });
-
-export {
-  ProfileContainer,
-  ProfileHeader,
-  ProfileAvatar,
-  ProfileInfo,
-  ProfileName,
-  ProfileTitle,
-  ProfileButtonGroup,
-  ConnectButton,
-  MessageButton,
-  ProfileAbout,
-  AboutHeading,
-  ExperienceCard
-};
