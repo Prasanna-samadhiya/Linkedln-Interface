@@ -40,8 +40,8 @@ function Login() {
             axios.post("http://localhost:3000/auth/login", LoginData, { withCredentials: true }).then((result) => {
                 console.log(result);
                 SetLogged(true);
-                dispatch(loggedinSuccess({User:{LoggedIn:true,User:result.data.user},Link:result.data.link}));
-                navigate("/profile");
+                dispatch(loggedinSuccess({LoggedIn:true,User:result.data.user,Link:result.data.link}));
+                navigate("/dash");
             }).catch((err) => {
                 console.log(err)
             })

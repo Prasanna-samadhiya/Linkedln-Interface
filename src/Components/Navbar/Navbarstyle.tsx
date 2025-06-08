@@ -1,79 +1,56 @@
-import { styled } from '@mui/material/styles';
-import { AppBar, Toolbar, Button, IconButton, Typography } from '@mui/material';
+// NavbarStyle.tsx
+import { AppBar, Box, Toolbar, IconButton, InputBase, Avatar} from '@mui/material';
+import { styled, alpha } from '@mui/material/styles';
 
-const StyledAppBar = styled(AppBar)({
-  backgroundColor: 'var(--appbar-bg)',
-  boxShadow: `0 2px 8px var(--appbar-shadow)`,
-  padding: '0 16px',
-  color: 'var(--text-color-primary)',
+export const StyledAppBar = styled(AppBar)({
+  backgroundColor: '#ffffff',
+  boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
   position: 'sticky',
   top: 0,
   zIndex: 1100,
 });
 
-const StyledToolbar = styled(Toolbar)({
+export const StyledToolbar = styled(Toolbar)({
   display: 'flex',
   justifyContent: 'space-between',
-  alignItems: 'center',
-  minHeight: '64px',
-  padding: '0',
 });
 
-const Logo = styled(Typography)({
-  fontWeight: 'bold',
-  fontSize: '20px',
-  color: 'var(--text-color-primary)',
-  textDecoration: 'none',
-  cursor: 'pointer',
-});
-
-const NavLinks = styled('div')({
+export const LogoBox = styled(Box)({
   display: 'flex',
   alignItems: 'center',
-  gap: '16px',
+  gap: '10px',
 });
 
-const NavButton = styled(Button)({
-  textTransform: 'none',
-  fontWeight: 600,
-  padding: '6px 14px',
-  borderRadius: '6px',
-  fontSize: '14px',
-  color: 'var(--text-color-primary)',
-  border: '1px solid var(--primary-color)',
-  backgroundColor: 'transparent',
+export const SearchBox = styled('div')(({ theme }) => ({
+  position: 'relative',
+  borderRadius: theme.shape.borderRadius,
+  backgroundColor: alpha('#eef3f8', 1),
   '&:hover': {
-    backgroundColor: 'var(--primary-color-light)',
-    borderColor: 'var(--primary-color)',
+    backgroundColor: alpha('#dce6f1', 1),
   },
+  marginLeft: 10,
+  width: '250px',
+}));
+
+export const StyledInputBase = styled(InputBase)({
+  color: 'black',
+  padding: '8px 10px',
+  width: '100%',
 });
 
-const PrimaryButton = styled(Button)({
-  textTransform: 'none',
-  fontWeight: 600,
-  padding: '6px 14px',
-  borderRadius: '6px',
-  fontSize: '14px',
-  color: 'var(--text-color-light)',
-  backgroundColor: 'var(--primary-color)',
-  '&:hover': {
-    backgroundColor: 'var(--primary-color-hover)',
-  },
+export const NavItemsBox = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '20px',
 });
 
-const MenuIconButton = styled(IconButton)({
-  display: 'none',
-  '@media (max-width: 100px)': {
-    display: 'inline-flex',
-  },
+export const NavIconButton = styled(IconButton)({
+  color: '#555',
+  flexDirection: 'column',
+  fontSize: '12px',
 });
 
-export {
-  StyledAppBar,
-  StyledToolbar,
-  Logo,
-  NavLinks,
-  NavButton,
-  PrimaryButton,
-  MenuIconButton,
-};
+export const MeAvatar = styled(Avatar)({
+  width: 24,
+  height: 24,
+});

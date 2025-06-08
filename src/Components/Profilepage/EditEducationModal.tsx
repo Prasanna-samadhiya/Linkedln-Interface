@@ -33,7 +33,7 @@ const EditEducationModal: React.FC<EducationProps> = ({
   educationArr
 }) => {
   const [form, setForm] = useState(initialValue);
-  const User = useSelector((state: RootState) => state.auth.User?.User);
+  const User = useSelector((state: RootState) => state.auth.User);
 
   const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [field]: e.target.value });
@@ -42,8 +42,9 @@ const EditEducationModal: React.FC<EducationProps> = ({
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
     console.log(educationArr);
-    const res = await axios.put(`http://localhost:3000/user/updateuser/${User._id}`, { education:educationArr });
-    console.log(res.data);
+    await axios.put(`http://localhost:3000/user/updateuser/${User?._id}`, { education:educationArr }).
+        then((res)=>{console.log(res.data);}).
+        catch((err)=>{console.log(err)})
     onSave(form);
     onClose();
   };

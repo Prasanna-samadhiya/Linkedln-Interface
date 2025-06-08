@@ -34,7 +34,7 @@ const EditCertificationModal: React.FC<CertificationProps> = ({
   certificationArr
 }) => {
   const [form, setForm] = useState(initialValue);
-  const User = useSelector((state: RootState) => state.auth.User?.User);
+  const User = useSelector((state: RootState) => state.auth.User);
 
 
 
@@ -47,8 +47,9 @@ const EditCertificationModal: React.FC<CertificationProps> = ({
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    const res = await axios.put(`http://localhost:3000/user/updateuser/${User._id}`, { certification:certificationArr });
-    console.log(res.data);
+    await axios.put(`http://localhost:3000/user/updateuser/${User?._id}`, { certification:certificationArr }).
+        then((res)=>{console.log(res.data);}).
+        catch((err)=>{console.log(err)})
     onSave(form);
     onClose();
   };

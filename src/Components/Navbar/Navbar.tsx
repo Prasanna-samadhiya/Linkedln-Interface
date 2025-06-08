@@ -1,38 +1,97 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   StyledAppBar,
   StyledToolbar,
-  Logo,
-  NavLinks,
-  NavButton,
-  PrimaryButton,
-  MenuIconButton,
+  LogoBox,
+  SearchBox,
+  StyledInputBase,
+  NavItemsBox,
+  NavIconButton,
+  MeAvatar,
 } from './Navbarstyle';
-import MenuIcon from '@mui/icons-material/Menu'; // Optional mobile menu icon
 
-const Navbar: React.FC = () => {
+import SearchIcon from '@mui/icons-material/Search';
+import HomeIcon from '@mui/icons-material/Home';
+import PeopleIcon from '@mui/icons-material/People';
+import WorkIcon from '@mui/icons-material/Work';
+import MessageIcon from '@mui/icons-material/Message';
+import GridViewIcon from '@mui/icons-material/GridView';
+
+import { Typography} from '@mui/material';
+import { useState } from 'react';
+import MeMenu from './MeMenu/MeMenu';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../Redux/Store/Store';
+import { useNavigate } from 'react-router-dom';
+
+const Navbar = () => {
+  const [showMeMenu, setShowMeMenu] = useState(false);
+  const Link = useSelector((state: RootState) => state.auth.Link);
   const navigate = useNavigate();
 
+  const handleMeClick = () => {
+    setShowMeMenu((prev) => !prev);
+  };
+
   return (
-    <StyledAppBar>
-      <StyledToolbar>
+    <>
+      <StyledAppBar>
+        <StyledToolbar>
+          <LogoBox>
+            <Typography
+              variant="h6"
+              noWrap
+              sx={{
+                color: '#0077b5',
+                fontWeight: 'bold',
+                marginRight: 2,
+              }}
+            >
+              LinkedIn
+            </Typography>
+            <SearchBox>
+              <StyledInputBase placeholder="Search" startAdornment={<SearchIcon />} />
+            </SearchBox>
+          </LogoBox>
 
-        <Logo variant="h6" onClick={() => navigate('/')}>
-          LinkedIn 
-        </Logo>
+          <NavItemsBox>
+            <NavIconButton  onClick={()=>navigate("/dash")}>
+              <HomeIcon/>
+              <Typography variant="caption">Home</Typography>
+            </NavIconButton>
+            <NavIconButton>
+              <PeopleIcon />
+              <Typography variant="caption">My Network</Typography>
+            </NavIconButton>
+            <NavIconButton>
+              <WorkIcon />
+              <Typography variant="caption">Jobs</Typography>
+            </NavIconButton>
+            <NavIconButton>
+              <MessageIcon />
+              <Typography variant="caption">Messaging</Typography>
+            </NavIconButton>
+            {/* <NavIconButton>
+              <Badge badgeContent={16} color="error">
+                <NotificationsIcon />
+              </Badge>
+              <Typography variant="caption">Notifications</Typography>
+            </NavIconButton> */}
 
-        <NavLinks>
-          <NavButton onClick={() => navigate('/login')}>Login</NavButton>
-          <PrimaryButton onClick={() => navigate('/register')}>Register</PrimaryButton>
-        </NavLinks>
+            <NavIconButton onClick={handleMeClick}>
+              <MeAvatar src={Link} />
+              <Typography variant="caption">Me</Typography>
+            </NavIconButton>
 
-        <MenuIconButton edge="end" color="inherit" aria-label="menu">
-          <MenuIcon />
-        </MenuIconButton>
+            <NavIconButton>
+              <GridViewIcon />
+              <Typography variant="caption">For Business</Typography>
+            </NavIconButton>
+          </NavItemsBox>
+        </StyledToolbar>
+      </StyledAppBar>
 
-      </StyledToolbar>
-    </StyledAppBar>
+      {showMeMenu && <MeMenu />}
+    </>
   );
 };
 

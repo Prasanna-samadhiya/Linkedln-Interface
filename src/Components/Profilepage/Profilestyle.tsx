@@ -104,3 +104,57 @@ export const SectionContent = styled(Box)({
   flexDirection: 'column',
   gap: '6px',
 });
+
+export const FramedAvatarWrapper = styled(Box)({
+  position: 'relative',
+  width: 100,
+  height: 100,
+});
+
+export const FrameSVG = styled('svg')({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+});
+
+export const CenteredBox = styled(Box)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  padding: theme.spacing(2),
+  position: "relative",
+}));
+
+export const FrameOptions = styled(Box)(({ theme }) => ({
+  display: "flex",
+  justifyContent: "center",
+  gap: theme.spacing(2),
+  marginTop: theme.spacing(2),
+}));
+
+export const SmallAvatar = styled(Avatar)(() => ({
+  width: 60,
+  height: 60,
+  border: "2px solid white",
+  cursor: "pointer",
+}));
+
+export const AvatarWithFrameContainer = styled(Box)({
+  position: "relative",
+  width: 150,
+  height: 150,
+});
+
+export const StyledAvatar = styled(Avatar)({
+  width: 150,
+  height: 150,
+  borderRadius: "50%",
+  zIndex: 1,
+});
+
+export const FrameOverlay = styled("svg")({
+  position: "absolute",
+  top: 0,
+  left: 0,
+  zIndex: 2,
+});

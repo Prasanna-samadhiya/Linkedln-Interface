@@ -39,7 +39,7 @@ const EditExperienceModal: React.FC<ExperienceProps> = ({
 }) => {
   const [form, setForm] = useState(initialValue);
 
-  const User = useSelector((state: RootState) => state.auth.User?.User);
+  const User = useSelector((state: RootState) => state.auth.User);
 
   const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [field]: e.target.value });

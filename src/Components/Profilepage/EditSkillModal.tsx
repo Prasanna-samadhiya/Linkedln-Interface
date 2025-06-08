@@ -28,7 +28,7 @@ const EditSkillModal: React.FC<SkillProps> = ({
 }) => {
   const [form, setForm] = useState(initialValue);
   
-  const User = useSelector((state: RootState) => state.auth.User?.User);
+  const User = useSelector((state: RootState) => state.auth.User);
 
   useEffect(() => {
     if (open) setForm(initialValue);

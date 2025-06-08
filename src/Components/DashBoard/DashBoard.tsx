@@ -1,69 +1,66 @@
-import { Button } from '@mui/material';
+// dashboard.tsx
+
 import {
-    DashboardContainer,
-    Sidebar,
-    FeedContainer,
-    SuggestionsContainer,
-    StyledCard,
-    SectionTitle,
-    CreatePostContainer,
-    PostTextField
-} from './DashBoardStyle';
-import Post from './Post';
+  Container,
+  Sidebar,
+  MainContent,
+  RightSidebar,
+  ProfileCard
+} from './DashboardStyle';
+import { Typography} from '@mui/material';
+import ProfileInfo from './ProfileInfo';
+import PostComposer from './PostComposer';
+import PostItem from './PostItem';
+import NewsWidget from './NewsWidget';
+import Navbar from '../Navbar/Navbar';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-const Dashboard = () => {
-    return (
-        <DashboardContainer>
-            {/* Left Sidebar */}
-            <Sidebar>
-                <StyledCard>
-                    <SectionTitle>Suggestions</SectionTitle>
-                    <ul>
-                        <li>User 1</li>
-                        <li>User 2</li>
-                        <li>User 3</li>
-                    </ul>
-                </StyledCard>
-                <StyledCard>
-                    <SectionTitle>Trending</SectionTitle>
-                    <ul>
-                        <li>#WebDev</li>
-                        <li>#AI</li>
-                        <li>#ReactJS</li>
-                    </ul>
-                </StyledCard>
-            </Sidebar>
+const Dashboard2 = () => {
+ 
+  const [Posts,setPosts]  = useState([]);
+  
+  useEffect(()=>{
+      axios.get("http://localhost:3000/post/getallposts").then((response)=>{
+        console.log(response.data)
+        setPosts(response.data.postsWithPresignedUrls);
+      }).catch((err)=>{
+        console.log(err)
+      })
+  },[])
 
-            {/* Main Feed */}
-            <FeedContainer>
-                <CreatePostContainer>
-                <PostTextField
-                    label="What's on your mind?"
-                    multiline
-                    rows={3}
-                    variant="outlined"
-                />
-                <Button variant="contained" >
-                    Post
-                </Button>
-            </CreatePostContainer>
-                <Post title="User 1" content="This is the content of the first post." />
-                <Post title="User 2" content="This is the content of the first post." />
-            </FeedContainer>
+  return (
+    <>
+    <Navbar/>
+    <Container>
+      <Sidebar>
+        <ProfileInfo />
+       
+        <ProfileCard>
+          <Typography variant="body2">Profile viewers: 10</Typography>
+          <Typography variant="body2">Post impressions: 39</Typography>
+        </ProfileCard>
+      </Sidebar>
 
-            {/* Right Sidebar */}
-            <SuggestionsContainer>
-                <StyledCard>
-                    <SectionTitle>Who to Follow</SectionTitle>
-                    <ul>
-                        <li>Developer A</li>
-                        <li>Engineer B</li>
-                        <li>Coder C</li>
-                    </ul>
-                </StyledCard>
-            </SuggestionsContainer>
-        </DashboardContainer>
-    );
+      <MainContent>
+        
+        <PostComposer />
+        {Posts.map((ele:any)=>{
+            return <PostItem
+              postid={ele._id}
+              content={ele.content}
+              presignedImages={ele.presignedImages}
+              Likes={ele.likes}
+        />
+        })}
+      </MainContent>
+
+      <RightSidebar>
+        <NewsWidget />
+      </RightSidebar>
+    </Container>
+    </>
+  );
 };
 
-export default Dashboard;
+export default Dashboard2;

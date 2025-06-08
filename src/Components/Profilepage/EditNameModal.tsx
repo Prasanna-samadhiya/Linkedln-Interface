@@ -18,7 +18,7 @@ interface Props {
 const EditNameModal: React.FC<Props> = ({ open, onClose, initialValue, onSave }) => {
   const [value, setValue] = React.useState(initialValue);
  
-  const User = useSelector((state: RootState) => state.auth.User?.User);
+  const User = useSelector((state: RootState) => state.auth.User);
    
 
 

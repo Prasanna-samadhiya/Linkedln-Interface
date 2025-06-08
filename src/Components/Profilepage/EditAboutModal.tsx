@@ -16,13 +16,14 @@ const EditAboutModal: React.FC<Props> = ({ open, onClose, initialValue, onSave }
     const [value, setValue] = useState(initialValue);
     console.log("in modal")
 
-      const User = useSelector((state: RootState) => state.auth.User?.User);
+      const User = useSelector((state: RootState) => state.auth.User);
 
 
     const handleSubmit = async(e: React.FormEvent) => {
         e.preventDefault();
-        const res = await axios.put(`http://localhost:3000/user/updateuser/${User._id}`,  {description:value} );
-        console.log(res.data);
+        await axios.put(`http://localhost:3000/user/updateuser/${User?._id}`,  {description:value} ).
+        then((res)=>{console.log(res.data);}).
+        catch((err)=>{console.log(err)})
         onSave(value);
         onClose();
     };

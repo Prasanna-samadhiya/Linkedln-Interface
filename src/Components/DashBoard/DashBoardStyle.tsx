@@ -1,107 +1,85 @@
-// DashboardStyle.ts
+// dashboardstyle.tsx
 import { styled } from '@mui/material/styles';
-import { Box, Typography, Paper, TextField, Avatar } from '@mui/material';
+import { Box, Avatar, Button, Paper } from '@mui/material';
 
-export const DashboardContainer = styled(Box)({
+export const Container = styled(Box)({
   display: 'flex',
-  minHeight: '100vh',
-  backgroundColor: '#f4f4f4',
+  justifyContent: 'space-between',
+  padding: '20px',
+  backgroundColor: '#f4f2ee',
 });
 
 export const Sidebar = styled(Box)({
-  width: '250px',
-  padding: '16px',
+  width: '20%',
   display: 'flex',
   flexDirection: 'column',
-  gap: '16px',
+  gap: '20px',
 });
 
-export const FeedContainer = styled(Box)({
-  flex: 1,
+export const MainContent = styled(Box)({
+  width: '55%',
+});
+
+export const RightSidebar = styled(Box)({
+  width: '20%',
+});
+
+export const ProfileCard = styled(Paper)({
   padding: '16px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px'
+  textAlign: 'center',
+  borderRadius: '12px',
 });
 
-export const SuggestionsContainer = styled(Box)({
-  width: '250px',
+export const PremiumCard = styled(Paper)({
   padding: '16px',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '16px',
-});
-
-export const StyledCard = styled(Paper)({
-  padding: '12px',
-  borderRadius: '10px',
+  borderRadius: '12px',
+  textAlign: 'center',
   backgroundColor: '#fff',
 });
 
-export const SectionTitle = styled(Typography)({
-  fontWeight: 600,
-  fontSize: '16px',
-  marginBottom: '8px',
-});
-
-export const PostActions = styled(Box)({
-  display: 'flex',
-  justifyContent: 'space-between',
-  marginTop: '12px',
-});
-
-export const ActionGroup = styled(Box)({
-  display: 'flex',
-  gap: '8px',
-  alignItems: 'center',
-});
-
-export const LikeButtonGroup = styled(Box)({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '4px',
-});
-
-export const CommentButtonGroup = styled(Box)({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '4px',
-});
-
-export const DislikeButtonGroup = styled(Box)({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '4px',
-});
-
-export const PostIcons = styled(Box)({
-    display:'flex',
-    flexDirection:'row'
-})
-
-export const CreatePostContainer = styled(Box)({
-  marginBottom: '24px',
+export const PostCard = styled(Paper)({
   padding: '16px',
+  borderRadius: '12px',
+  marginTop: '16px',
+});
+
+export const CreatePostCard = styled(Paper)({
+  padding: '16px',
+  borderRadius: '12px',
+  marginTop: '16px',
+});
+
+export const CreatePostArea = styled(Box)({
+ display: 'flex',
+  flexDirection: 'row',
+  gap: "10px"
+});
+
+
+export const NewsCard = styled(Paper)({
+  padding: '16px',
+  borderRadius: '12px',
   backgroundColor: '#fff',
-  borderRadius: '10px',
-  boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '12px',
 });
 
-export const PostTextField = styled(TextField)({
-  width: '100%',
+export const AvatarLarge = styled(Avatar)({
+  width: 60,
+  height: 60,
+  margin: '0 auto 10px',
 });
 
-export const PostHeader = styled(Box)({
-  display: 'flex',
-  alignItems: 'center',
-  gap: '12px',
-  marginBottom: '8px',
-});
-
-export const PostAvatar = styled(Avatar)({
+export const AvatarLargeModal = styled(Avatar)({
   width: 40,
   height: 40,
+  marginLeft: 10,
+  marginRight: 10
 });
+
+export const CustomButton = styled(Button)({
+  marginTop: '10px',
+});
+
+export const ImageArea = styled(Box)({
+  display: "flex",
+  justifyContent: "center"
+})

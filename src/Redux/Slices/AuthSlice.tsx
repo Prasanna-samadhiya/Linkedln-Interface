@@ -1,18 +1,56 @@
-import { createSlice, current } from '@reduxjs/toolkit'
+import { createSlice} from '@reduxjs/toolkit';
 
+export interface Education {
+  title: string;
+  institution?: string;
+  description?: string;
+}
+
+export interface Experience {
+  company: string;
+  joining: Date;
+  leaving: Date;
+  description: string;
+}
+
+export interface Certification {
+  name: string;
+  organisation: string;
+}
+
+// ✅ Extend the user to include 'frame'
 export interface CounterState {
   LoggedIn: boolean;
-  User: {} | undefined;
+  User: {
+    _id: string;
+    name: string;
+    email: string;
+    image?: string;
+    backgroundimage?: string;
+    password: string;
+    education: Education[];
+    experience: Experience[];
+    lang?: string;
+    certification: Certification[];
+    skills: string[];
+    connections: string[];
+    isverified: boolean;
+    token?: string;
+    votp?: string;
+    fotp?: string;
+    description?: string;
+    frame?: 'none' | 'open' | 'hiring'; // 👈 added
+  } | undefined;
   Link: string;
   Loading: boolean;
 }
 
 const initialState: CounterState = {
   LoggedIn: false,
-  User: {},
+  User: undefined,
   Link: "",
-  Loading: true
-}
+  Loading: true,
+};
 
 export const AuthSlice = createSlice({
   name: 'auth',
@@ -27,29 +65,42 @@ export const AuthSlice = createSlice({
       return state;
     },
     loggedoutSuccess(state) {
-      state.LoggedIn = true;
+      state.LoggedIn = false;
       state.User = undefined;
       console.log(state.User);
       return state;
     },
     updateProfileImage(state, action) {
-      console.log(state.Link);
       if (state.User) {
         state.Link = action.payload;
       }
     },
+    updateProfileFrame(state, action) {
+      if (state.User) {
+        state.User.frame = action.payload; 
+        console.log(state.User.frame);
+      }
+    },
     updateUserField(state, action) {
       const { field, value } = action.payload;
-      console.log(field,value)
-      console.log("User",current(state.User))
       if (state.User) {
-        state.User.User[field] = value;
+        state.User[field] = value;
       }
-      console.log("User",current(state.User))
-    }
+    },
+    checkifLoggedIn(state, action) {
+      state.Loading = action.payload;
+    },
   },
-})
+});
 
-export const { loggedinSuccess, loggedoutSuccess, updateProfileImage,updateUserField } = AuthSlice.actions
+// ✅ Export the new reducer action
+export const {
+  loggedinSuccess,
+  loggedoutSuccess,
+  updateProfileImage,
+  updateProfileFrame, // 👈 include this
+  updateUserField,
+  checkifLoggedIn
+} = AuthSlice.actions;
 
-export default AuthSlice.reducer
+export default AuthSlice.reducer;
