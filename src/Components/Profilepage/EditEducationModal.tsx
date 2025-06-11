@@ -41,7 +41,8 @@ const EditEducationModal: React.FC<EducationProps> = ({
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    console.log(educationArr);
+    // educationArr.push(form);
+    console.log("education:",educationArr);
     await axios.put(`http://localhost:3000/user/updateuser/${User?._id}`, { education:educationArr }).
         then((res)=>{console.log(res.data);}).
         catch((err)=>{console.log(err)})

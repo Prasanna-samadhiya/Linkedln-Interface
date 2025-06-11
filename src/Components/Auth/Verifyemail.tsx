@@ -20,8 +20,10 @@ function Verify() {
     useEffect(() => {
         if (VerifyData.email == "" || VerifyData.otp == "") {
             SetErr("Fields are empty")
+        }else{
+            SetErr("")
         }
-    }, [])
+    }, [VerifyData])
 
     const HandleChange = (e: any) => {
         SetVerifyData({ ...VerifyData, [e.target.name]: e.target.value })
@@ -38,7 +40,7 @@ function Verify() {
                 console.log(err)
             })
         } else {
-            console.log("err occured")
+            console.log("err occured",Err,VerifyData)
         }
     }
 
@@ -48,6 +50,7 @@ function Verify() {
                 <div>{Verified ? <Alert>Email Verified</Alert> : null}</div>
                 <RegisterCard>
                     <h1>Verify Email</h1>
+                    <div>Email:<StyledInput onChange={HandleChange} name="email"></StyledInput></div>
                     <div>OTP:<StyledInput onChange={HandleChange} name="otp"></StyledInput></div>
                     <SubmitButton onClick={Handleclick}>Verify</SubmitButton>
                     Already Verified? click <Link to="/Login">Here</Link>

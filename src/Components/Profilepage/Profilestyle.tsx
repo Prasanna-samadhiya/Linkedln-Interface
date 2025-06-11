@@ -152,9 +152,24 @@ export const StyledAvatar = styled(Avatar)({
   zIndex: 1,
 });
 
-export const FrameOverlay = styled("svg")({
-  position: "absolute",
+// export const FrameOverlay = styled("svg")({
+//   position: "absolute",
+//   top: 0,
+//   left: 0,
+//   zIndex: 2,
+// });
+
+export const ProfileImageWrapper = styled(Box)({
+  position: 'relative',
+  width: 150,
+  height: 150,
+});
+
+export const FrameOverlay = styled('img')({
+  position: 'absolute',
   top: 0,
   left: 0,
-  zIndex: 2,
+  width: '100%',
+  height: '100%',
+  pointerEvents: 'none',
 });

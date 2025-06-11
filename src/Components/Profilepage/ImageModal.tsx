@@ -12,16 +12,19 @@ import {
     Box,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { updateProfileImage, updateProfileFrame } from '../../Redux/Slices/AuthSlice';
 import axios from 'axios';
-import type { RootState } from '../../Redux/Store/Store';
 import { useDispatch, useSelector } from 'react-redux';
+import { updateProfileImage, updateProfileFrame } from '../../Redux/Slices/AuthSlice';
+import type { RootState } from '../../Redux/Store/Store';
+import OpenToWorkFrame from '../../assets/work.png';
+import HiringFrame from '../../assets/hiring.png';
 
 interface EditCoverModalProps {
     open: boolean;
     onClose: () => void;
 }
 
+// Styled Components
 const CenteredBox = styled(Box)(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
@@ -44,6 +47,21 @@ const SmallAvatar = styled(Avatar)(() => ({
     cursor: 'pointer',
 }));
 
+const ProfileImageWrapper = styled(Box)({
+    position: 'relative',
+    width: 150,
+    height: 150,
+});
+
+const FrameOverlay = styled('img')({
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    pointerEvents: 'none',
+});
+
 const EditCoverModal: React.FC<EditCoverModalProps> = ({ open, onClose }) => {
     const [tabIndex, setTabIndex] = useState(0);
     const [selectedFrame, setSelectedFrame] = useState<'none' | 'open' | 'hiring'>('none');
@@ -64,7 +82,6 @@ const EditCoverModal: React.FC<EditCoverModalProps> = ({ open, onClose }) => {
 
         try {
             const userId = User?._id;
-
             const response = await axios.put(
                 `http://localhost:3000/user/updateimage/${userId}`,
                 formData
@@ -83,7 +100,7 @@ const EditCoverModal: React.FC<EditCoverModalProps> = ({ open, onClose }) => {
             const userId = User?._id;
             const response = await axios.put(
                 `http://localhost:3000/user/updatestatus/${userId}`,
-                { frame: selectedFrame }
+                { status: selectedFrame }
             );
 
             console.log('Frame update success:', response.data);
@@ -101,54 +118,21 @@ const EditCoverModal: React.FC<EditCoverModalProps> = ({ open, onClose }) => {
 
             <DialogContent>
                 <CenteredBox>
-                    <Box sx={{ position: 'relative', width: 150, height: 150 }}>
+                    <ProfileImageWrapper>
                         <Avatar src={Link} sx={{ width: 150, height: 150 }} />
-                        {(selectedFrame === 'open' || selectedFrame === 'hiring') && (
-                            <svg
-                                width="150"
-                                height="150"
-                                viewBox="0 0 150 150"
-                                style={{ position: 'absolute', top: 0, left: 0 }}
-                            >
-                                <defs>
-                                    <path
-                                        id="textCircle"
-                                        d="M 75,75 m -65,0 a 65,65 0 1,1 130,0 a 65,65 0 1,1 -130,0"
-                                    />
-                                </defs>
-
-                                <text
-                                    stroke={selectedFrame === 'open' ? 'green' : 'blue'}
-                                    strokeWidth="4"
-                                    fill="none"
-                                    fontSize="12"
-                                    fontWeight="bold"
-                                >
-                                    <textPath
-                                        href="#textCircle"
-                                        startOffset="50%"
-                                        textAnchor="middle"
-                                    >
-                                        {selectedFrame === 'open' ? '#OPENTOWORK' : 'HIRING'}
-                                    </textPath>
-                                </text>
-
-                                <text
-                                    fill="white"
-                                    fontSize="12"
-                                    fontWeight="bold"
-                                >
-                                    <textPath
-                                        href="#textCircle"
-                                        startOffset="50%"
-                                        textAnchor="middle"
-                                    >
-                                        {selectedFrame === 'open' ? '#OPENTOWORK' : 'HIRING'}
-                                    </textPath>
-                                </text>
-                            </svg>
+                        {selectedFrame === 'open' && (
+                            <FrameOverlay
+                                src={OpenToWorkFrame}
+                                alt="Open to Work Frame"
+                            />
                         )}
-                    </Box>
+                        {selectedFrame === 'hiring' && (
+                            <FrameOverlay
+                                src={HiringFrame}
+                                alt="Hiring Frame"
+                            />
+                        )}
+                    </ProfileImageWrapper>
                 </CenteredBox>
 
                 <Tabs value={tabIndex} onChange={handleTabChange} centered>

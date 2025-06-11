@@ -9,9 +9,10 @@ import {
   SectionCard,
   SectionTitle,
   SectionContent,
-  FrameSVG,
-  FramedAvatarWrapper,
+  ProfileImageWrapper,
+  FrameOverlay
 } from './Profilestyle';
+
 import { Avatar, Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch, useSelector } from 'react-redux';
@@ -31,6 +32,10 @@ import EditCertificationModal from './EditCertificationModal';
 import EditSkillModal from './EditSkillModal';
 import Navbar from '../Navbar/Navbar';
 import EditCoverModal from './ImageModal';
+import OpenToWorkFrame from '../../assets/work.png';
+import HiringFrame from '../../assets/hiring.png';
+import FramedAvatar from '../DashBoard/FrameImage';
+
 
 const Profile = () => {
 
@@ -52,10 +57,13 @@ const Profile = () => {
   const [openNameModal, setOpenNameModal] = useState(false);
   const [openAboutModal, setOpenAboutModal] = useState(false);
   const [openEducationModal, setOpenEducationModal] = useState(false);
+
   const dispatch = useDispatch();
 
   console.log("User:", User);
   console.log("Link:", Link);
+
+
 
   useEffect(() => {
     SetExperienceArr(ExperienceArr);
@@ -82,37 +90,6 @@ const Profile = () => {
     GetUserDetails();
   }, [User, Link, User?._id]);
 
-  // const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const file = event.target.files?.[0];
-  //   if (!file) return;
-
-  //   const formData = new FormData();
-  //   formData.append("file", file);  
-
-  //   try {
-  //     const userId = User?._id; 
-
-  //     await axios.put(
-  //       `http://localhost:3000/user/updateimage/${userId}`,
-  //       formData
-  //     ).then((response) => {
-  //       console.log("success:", response.data);
-  //       SetUploaded(true);
-  //       dispatch(updateProfileImage(response.data.presignedurl));
-  //     }).catch((err) => {
-  //       console.log(err.message);
-  //     });
-
-  //     // console.log("Upload successful:", response.data);
-
-  //     // Optionally update state/UI with new image URL
-  //     // setImageUrl(response.data.imageUrl);
-
-  //   } catch (error: any) {
-  //     console.error("Error uploading image:", error.response?.data || error.message);
-  //   }
-  // };
-
   return (
     <>
       <Navbar />
@@ -122,48 +99,18 @@ const Profile = () => {
         </CoverPhoto>
         <EditCoverModal open={openCoverModal} onClose={() => setOpenCoverModal(false)} />
         <AvatarWrapper>
-          <FramedAvatarWrapper>
-            <Avatar
-              src={Link}
-              alt="Profile"
-              sx={{ width: 100, height: 100 }}
-            />
-            {(User?.frame === 'open' || User?.frame === 'hiring') && (
-              <FrameSVG width="100" height="100" viewBox="0 0 100 100">
-                <defs>
-                  <path
-                    id="textCircle"
-                    d="M 50,50 m -42,0 a 42,42 0 1,1 84,0 a 42,42 0 1,1 -84,0"
-                  />
-                </defs>
+          <ProfileImageWrapper>
+            <Avatar src={Link} sx={{ width: 150, height: 150 }} />
+            {User?.status === 'open' && <FrameOverlay src={OpenToWorkFrame} alt="Open to Work Frame" />}
+            {User?.status === 'hiring' && <FrameOverlay src={HiringFrame} alt="Hiring Frame" />}
+          </ProfileImageWrapper>
 
-                {/* Stroke Layer */}
-                <text
-                  stroke={User.frame === 'open' ? 'green' : 'blue'}
-                  strokeWidth="2"
-                  fill="none"
-                  fontSize="8"
-                  fontWeight="bold"
-                >
-                  <textPath href="#textCircle" startOffset="50%" textAnchor="middle">
-                    {User.frame === 'open' ? '#OPENTOWORK' : 'HIRING'}
-                  </textPath>
-                </text>
-
-                {/* Fill Layer */}
-                <text fill="white" fontSize="8" fontWeight="bold">
-                  <textPath href="#textCircle" startOffset="50%" textAnchor="middle">
-                    {User.frame === 'open' ? '#OPENTOWORK' : 'HIRING'}
-                  </textPath>
-                </text>
-              </FrameSVG>
-            )}
-          </FramedAvatarWrapper>
 
           <EditAvatarIcon onClick={() => setOpenCoverModal(true)}>
             <EditIcon fontSize="small" />
           </EditAvatarIcon>
         </AvatarWrapper>
+
 
 
         <ProfileInfoSection>
@@ -195,7 +142,6 @@ const Profile = () => {
           </ButtonsRow>
         </ProfileInfoSection>
 
-        {/* About Section */}
         <SectionCard>
           <SectionTitle><div>About</div>
             <EditIcon style={{ cursor: "pointer" }} onClick={() => setOpenAboutModal(true)} />
@@ -244,7 +190,6 @@ const Profile = () => {
           }) : <div>No Expriences added</div>}
         </SectionCard>
 
-        {/* Education Section */}
         <SectionCard>
           <SectionTitle><div>Education</div> <EditIcon onClick={() => setOpenEducationModal(true)} /></SectionTitle>
           {EducationArr ? EducationArr.map((ele: any) => {

@@ -47,8 +47,9 @@ const EditExperienceModal: React.FC<ExperienceProps> = ({
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
-    console.log("form:",form);
-    const res = await axios.put(`http://localhost:3000/user/updateuser/${User._id}`, { experience:experienceArr });
+    experienceArr.push(form);
+    console.log("Experience:",experienceArr);
+    const res = await axios.put(`http://localhost:3000/user/updateuser/${User?._id}`, { experience:experienceArr });
     console.log(res.data);
     onSave(form);
     onClose();

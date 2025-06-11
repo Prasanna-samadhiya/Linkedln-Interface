@@ -1,5 +1,11 @@
-// NavbarStyle.tsx
-import { AppBar, Box, Toolbar, IconButton, InputBase, Avatar} from '@mui/material';
+import {
+  AppBar,
+  Box,
+  Toolbar,
+  IconButton,
+  InputBase,
+  Typography,
+} from '@mui/material';
 import { styled, alpha } from '@mui/material/styles';
 
 export const StyledAppBar = styled(AppBar)({
@@ -44,13 +50,16 @@ export const NavItemsBox = styled(Box)({
   gap: '20px',
 });
 
-export const NavIconButton = styled(IconButton)({
-  color: '#555',
+export const NavIconButton = styled(IconButton)<{ active?: boolean }>(({ active }) => ({
+  color: active ? '#000' : '#555',
   flexDirection: 'column',
   fontSize: '12px',
-});
+  borderBottom: active ? '2px solid black' : '2px solid transparent',
+  borderRadius: 0,
+  paddingBottom: 4,
+  transition: 'border-bottom 0.2s, color 0.2s',
+}));
 
-export const MeAvatar = styled(Avatar)({
-  width: 24,
-  height: 24,
+export const NavText = styled(Typography)({
+  fontSize: '12px',
 });

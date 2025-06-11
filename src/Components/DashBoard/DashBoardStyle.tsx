@@ -24,12 +24,16 @@ export const RightSidebar = styled(Box)({
   width: '20%',
 });
 
-export const ProfileCard = styled(Paper)({
+export const ProfileCard = styled(Paper)(({theme}) => ({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',     
+  justifyContent: 'center', 
+  gap: theme.spacing(1), 
   padding: '16px',
   textAlign: 'center',
-  borderRadius: '12px',
-});
-
+  borderRadius: '12px',   
+}));
 export const PremiumCard = styled(Paper)({
   padding: '16px',
   borderRadius: '12px',

@@ -39,7 +39,7 @@ export interface CounterState {
     votp?: string;
     fotp?: string;
     description?: string;
-    frame?: 'none' | 'open' | 'hiring'; // 👈 added
+    status?: 'none' | 'open' | 'hiring'; // 👈 added
   } | undefined;
   Link: string;
   Loading: boolean;
@@ -77,8 +77,8 @@ export const AuthSlice = createSlice({
     },
     updateProfileFrame(state, action) {
       if (state.User) {
-        state.User.frame = action.payload; 
-        console.log(state.User.frame);
+        state.User.status = action.payload; 
+        console.log(state.User.status);
       }
     },
     updateUserField(state, action) {

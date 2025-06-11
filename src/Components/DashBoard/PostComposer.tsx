@@ -1,14 +1,15 @@
-// components/PostComposer.tsx
-import { Avatar, Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import { CreatePostArea, CreatePostCard } from "./DashboardStyle";
 import { useState } from "react";
 import PostModal from "./PostModal";
 import { useSelector } from "react-redux";
 import type { RootState } from "../../Redux/Store/Store";
+import FramedAvatar from "./FrameImage";
 
 function PostComposer() {
   const [openModal, setOpenModal] = useState(false);
   const Link = useSelector((state: RootState) => state.auth.Link);
+  const User = useSelector((state:RootState) => state.auth.User)
 
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
@@ -17,7 +18,7 @@ function PostComposer() {
     <>
       <CreatePostCard onClick={handleOpen} style={{ cursor: 'pointer' }}>
         <CreatePostArea>
-        <Avatar src={Link} sx={{ width: 56, height: 56 }} />
+        <FramedAvatar image={Link} frame={User?.status} size={50}/>
         <TextField
           fullWidth
           variant="outlined"

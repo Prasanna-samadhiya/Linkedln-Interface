@@ -47,6 +47,8 @@ const EditCertificationModal: React.FC<CertificationProps> = ({
 
   const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
+    certificationArr = certificationArr.push(form);
+    console.log(certificationArr)
     await axios.put(`http://localhost:3000/user/updateuser/${User?._id}`, { certification:certificationArr }).
         then((res)=>{console.log(res.data);}).
         catch((err)=>{console.log(err)})

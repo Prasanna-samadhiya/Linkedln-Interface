@@ -12,6 +12,8 @@ import { useDispatch } from 'react-redux';
 import { checkifLoggedIn, loggedinSuccess } from './Redux/Slices/AuthSlice';
 import Dashboard2 from './Components/DashBoard/DashBoard';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
+import NetworkPage from './Components/Network/Network';
+import Connection from './Components/Connection/Connection';
 
 
 const App: React.FC = () => {
@@ -21,13 +23,16 @@ const App: React.FC = () => {
   useEffect(()=>{
          const allCookies = document.cookie;
          console.log("cookies:",document.cookie.split("=")[1]);
-         const cookie = allCookies.split("=").slice(1).join("");
+         const cookie = allCookies.split("=")[1]  
          console.log("cookies:",cookie);
       
      axios.post("http://localhost:3000/user/userdata",{authtoken:cookie},{withCredentials:true}).then((response)=>{
          console.log("real data:",response.data)
          dispatch(loggedinSuccess({User:response.data.user,Link:response.data.presignedurl}))
-     }).catch(()=>{dispatch(checkifLoggedIn(false))})
+     }).catch((err)=>{
+         dispatch(checkifLoggedIn(false))
+         console.log(err)
+     })
   },[]);
 
   return (
@@ -43,6 +48,8 @@ const App: React.FC = () => {
            <Route path='/forgot' element={<Forget/>}/>
            <Route path='/cpass' element={<CreateNewPassword/>}/>
            <Route path='/dash' element={<Dashboard2/>}/>
+           <Route path='/network' element={<NetworkPage/>}/>
+           <Route path='/connection' element={<Connection/>}/>
            </Route>
          </Routes>
       </BrowserRouter>

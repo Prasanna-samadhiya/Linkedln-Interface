@@ -1,9 +1,10 @@
 import { useNavigate } from 'react-router-dom'
 import { ActionButtons, LinkText, MeMenuContainer, Section, UserInfo, UserText } from './MeMenuStyle'
-import { Avatar, Button, Divider, Typography } from '@mui/material'
+import { Button, Divider, Typography } from '@mui/material'
 import { useDispatch, useSelector } from 'react-redux';
 import { loggedoutSuccess } from '../../../Redux/Slices/AuthSlice';
 import type { RootState } from '../../../Redux/Store/Store';
+import FramedAvatar from '../../DashBoard/FrameImage';
 
 function MeMenu() {
 
@@ -15,7 +16,7 @@ function MeMenu() {
     return (
         <MeMenuContainer>
             <UserInfo>
-                <Avatar src={Link} sx={{ width: 56, height: 56 }} />
+                <FramedAvatar image={Link} frame={User?.status} size={56}/>
                 <UserText>
                     <Typography variant="subtitle1">{User?.name}</Typography>
                     <Typography variant="body2" color="text.secondary">
