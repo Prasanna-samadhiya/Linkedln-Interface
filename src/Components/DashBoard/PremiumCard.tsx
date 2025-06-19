@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import { CustomButton, PremiumCard } from "./DashBoardStyle";
+import { CustomButton, PremiumCard } from "./DashboardStyle";
 
 
 const PremiumCard1 = ({ text, buttonLabel }: { text: string; buttonLabel: string }) => {

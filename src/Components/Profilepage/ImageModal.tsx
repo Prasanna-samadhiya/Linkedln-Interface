@@ -18,6 +18,7 @@ import { updateProfileImage, updateProfileFrame } from '../../Redux/Slices/AuthS
 import type { RootState } from '../../Redux/Store/Store';
 import OpenToWorkFrame from '../../assets/work.png';
 import HiringFrame from '../../assets/hiring.png';
+import FramedAvatar from '../DashBoard/FrameImage';
 
 interface EditCoverModalProps {
     open: boolean;
@@ -67,6 +68,7 @@ const EditCoverModal: React.FC<EditCoverModalProps> = ({ open, onClose }) => {
     const [selectedFrame, setSelectedFrame] = useState<'none' | 'open' | 'hiring'>('none');
     const User = useSelector((state: RootState) => state.auth.User);
     const Link = useSelector((state: RootState) => state.auth.Link);
+    const url = import.meta.env.VITE_BASE_URL;
     const dispatch = useDispatch();
 
     const handleTabChange = (_: React.SyntheticEvent, newValue: number) => {
@@ -82,10 +84,7 @@ const EditCoverModal: React.FC<EditCoverModalProps> = ({ open, onClose }) => {
 
         try {
             const userId = User?._id;
-            const response = await axios.put(
-                `http://localhost:3000/user/updateimage/${userId}`,
-                formData
-            );
+            const response = await axios.put(`${url}/user/updateimage/${userId}`,formData);
 
             console.log('Upload success:', response.data);
             dispatch(updateProfileImage(response.data.presignedurl));
@@ -99,7 +98,7 @@ const EditCoverModal: React.FC<EditCoverModalProps> = ({ open, onClose }) => {
         try {
             const userId = User?._id;
             const response = await axios.put(
-                `http://localhost:3000/user/updatestatus/${userId}`,
+                `${url}/user/updatestatus/${userId}`,
                 { status: selectedFrame }
             );
 
@@ -162,22 +161,12 @@ const EditCoverModal: React.FC<EditCoverModalProps> = ({ open, onClose }) => {
                         <Typography>Select a frame:</Typography>
                         <FrameOptions>
                             <Box onClick={() => setSelectedFrame('open')} sx={{ textAlign: 'center' }}>
-                                <SmallAvatar
-                                    src={Link}
-                                    sx={{
-                                        borderColor: selectedFrame === 'open' ? 'green' : 'white',
-                                    }}
-                                />
+                                <FramedAvatar image={Link} frame='open' size={63}/>
                                 <Typography variant="caption">Open to Work</Typography>
                             </Box>
 
                             <Box onClick={() => setSelectedFrame('hiring')} sx={{ textAlign: 'center' }}>
-                                <SmallAvatar
-                                    src={Link}
-                                    sx={{
-                                        borderColor: selectedFrame === 'hiring' ? 'blue' : 'white',
-                                    }}
-                                />
+                                <FramedAvatar image={Link} frame='hiring' size={63}/>
                                 <Typography variant="caption">Hiring</Typography>
                             </Box>
 

@@ -12,9 +12,10 @@ function Verify() {
         otp: string;
     }
 
-    const [VerifyData, SetVerifyData] = useState<Verificationdata>({ email: "", otp: "" })
-    const [Verified, SetVerified] = useState<boolean>(false)
-    const [Err, SetErr] = useState<string>("")
+    const [VerifyData, SetVerifyData] = useState<Verificationdata>({ email: "", otp: "" });
+    const [Verified, SetVerified] = useState<boolean>(false);
+    const url = import.meta.env.VITE_BASE_URL;
+    const [Err, SetErr] = useState<string>("");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,7 +33,7 @@ function Verify() {
 
     const Handleclick = () => {
         if (Err == "") {
-            axios.post("http://localhost:3000/auth/verifyotp", VerifyData, { withCredentials: true }).then((result) => {
+            axios.post(`${url}/auth/verifyotp`, VerifyData, { withCredentials: true }).then((result) => {
                 console.log(result);
                 SetVerified(true)
                 navigate("/login")

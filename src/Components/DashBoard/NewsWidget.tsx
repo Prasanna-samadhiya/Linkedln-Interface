@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material"
-import { NewsCard } from "./DashBoardStyle"
+import { NewsCard } from "./DashboardStyle"
 
 function NewsWidget() {
 

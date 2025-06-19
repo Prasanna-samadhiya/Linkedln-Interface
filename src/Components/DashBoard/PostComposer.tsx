@@ -6,6 +6,8 @@ import { useSelector } from "react-redux";
 import type { RootState } from "../../Redux/Store/Store";
 import FramedAvatar from "./FrameImage";
 
+
+
 function PostComposer() {
   const [openModal, setOpenModal] = useState(false);
   const Link = useSelector((state: RootState) => state.auth.Link);
@@ -24,12 +26,11 @@ function PostComposer() {
           variant="outlined"
           placeholder="Start a post"
           size="small"
-          disabled
+          sx={{borderRadius:"15px"}}
         />
         </CreatePostArea>
         <Box display="flex" justifyContent="space-between" mt={2}>
-          <Button>Write Post</Button>
-
+          <Button>Write Post</Button>         
         </Box>
       </CreatePostCard>
       

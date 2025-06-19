@@ -14,13 +14,15 @@ import PeopleIcon from '@mui/icons-material/People';
 import WorkIcon from '@mui/icons-material/Work';
 import MessageIcon from '@mui/icons-material/Message';
 import GridViewIcon from '@mui/icons-material/GridView';
-import { Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MeMenu from './MeMenu/MeMenu';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../Redux/Store/Store';
 import { useNavigate, useLocation } from 'react-router-dom';
 import FramedAvatar from '../DashBoard/FrameImage';
+import LinkedlnImage from '../../assets/Linkedln.webp';
+import { Badge } from '@mui/material';
+import axios from 'axios';
 
 const Navbar = () => {
   const [showMeMenu, setShowMeMenu] = useState(false);
@@ -28,6 +30,8 @@ const Navbar = () => {
   const User = useSelector((state: RootState) => state.auth.User);
   const navigate = useNavigate();
   const location = useLocation();
+  const [requests,setRequests] = useState(0);
+  const url = import.meta.env.VITE_BASE_URL;
 
   const handleMeClick = () => {
     setShowMeMenu((prev) => !prev);
@@ -35,22 +39,23 @@ const Navbar = () => {
 
   const isActive = (path: string) => location.pathname === path;
 
+  useEffect(()=>{
+     
+    async function GetAllRequests() {
+      const res = await axios.get(`${url}/connection/getrequests/${User?._id}`);
+      setRequests(res.data.newUsers.length);
+    }
+
+    GetAllRequests();
+
+  },[])
+
   return (
     <>
       <StyledAppBar>
         <StyledToolbar>
           <LogoBox>
-            <Typography
-              variant="h6"
-              noWrap
-              sx={{
-                color: '#0077b5',
-                fontWeight: 'bold',
-                marginRight: 2,
-              }}
-            >
-              LinkedIn
-            </Typography>
+            <img src={LinkedlnImage} style={{height:"60px",width:"60px"}}/>
             <SearchBox>
               <StyledInputBase placeholder="Search" startAdornment={<SearchIcon />} />
             </SearchBox>
@@ -63,7 +68,9 @@ const Navbar = () => {
             </NavIconButton>
 
             <NavIconButton active={isActive("/network")} onClick={() => navigate("/network")}>
+              <Badge badgeContent={requests} color="primary">
               <PeopleIcon />
+              </Badge>
               <NavText>My Network</NavText>
             </NavIconButton>
 
@@ -79,7 +86,7 @@ const Navbar = () => {
 
             <NavIconButton active={isActive("/me")} onClick={handleMeClick}>
               <FramedAvatar image={Link} frame={User?.status} size={30} />
-              <NavText>Me</NavText>
+              <NavText>Me▼</NavText>
             </NavIconButton>
 
             <NavIconButton active={isActive("/business")} onClick={() => navigate("/business")}>

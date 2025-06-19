@@ -2,15 +2,23 @@
 import { Avatar, Box, Button, styled, Typography } from '@mui/material';
 
 export const Container = styled(Box)({
-  backgroundColor: 'var(--screen-bg-start)',
-  minHeight: '100vh',
+  backgroundColor: '#f3f1ee',
+  position:"relative",
+  width:"900px",
+  minHeight: '90vh',
+  top:'10px',
+  left:'200px',
+  padding: "50px"
 });
 
 export const CoverPhoto = styled(Avatar)({
   height: 200,
+  width: "100%",
   backgroundColor: 'var(--background-soft)',
   position: 'relative',
-  borderRadius: 0
+  borderRadius: 0,
+  borderTopRightRadius: 15,
+  borderTopLeftRadius: 15
 });
 
 export const EditCoverButton = styled(Button)({
@@ -27,7 +35,7 @@ export const AvatarWrapper = styled(Box)({
   position: 'relative',
   width: 'fit-content',
   marginLeft: 30,
-  marginTop: -50,
+  marginTop: -120,
 });
 
 export const EditAvatarIcon = styled(Box)({
@@ -47,7 +55,7 @@ export const EditAvatarIcon = styled(Box)({
 
 export const ProfileInfoSection = styled(Box)({
   backgroundColor: 'var(--background-light)',
-  paddingTop: 120, // space between avatar and info
+  paddingTop: 120, 
   paddingBottom: 20,
   paddingLeft: 30,
   paddingRight: 30,
@@ -82,8 +90,9 @@ export const MessageButton = styled(Button)({
 
 export const SectionCard = styled(Box)({
   backgroundColor: 'var(--background-light)',
-  padding: '20px',
-  margin: '20px 30px',
+  marginTop: '10px',
+  marginBottom: '10px',
+  padding: '10px',
   borderRadius: '10px',
   boxShadow: '0 2px 5px var(--shadow-light)',
 });

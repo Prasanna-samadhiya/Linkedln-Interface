@@ -1,11 +1,4 @@
-
-import {
-  Container,
-  Sidebar,
-  MainContent,
-  RightSidebar,
-  ProfileCard
-} from './DashboardStyle';
+import {Container,Sidebar,MainContent,RightSidebar,Filter} from './DashboardStyle';
 import { Box, Typography } from '@mui/material';
 import ProfileInfo from './ProfileInfo';
 import PostComposer from './PostComposer';
@@ -20,20 +13,60 @@ const Dashboard2 = () => {
 
   const [Posts, setPosts] = useState([]);
   const [Reposts, setReposts] = useState([]);
+  const [sortBy, setSortBy] = useState("");
+  const [Loader,setLoader] = useState(true);
+  const url = import.meta.env.VITE_BASE_URL;
+
+  
 
   useEffect(() => {
 
-    const GetAllPosts = async () => {
-      await axios.get("http://localhost:3000/post/getallposts").then((response) => {
+    if (sortBy == "top") {
+      const GetAllPostsByLikes = async () => {
+        setLoader(true);
+        setPosts([]);
+        await axios.get(`${url}/post/getpostsbylikes`,{ withCredentials: true }).then((response) => {
+          console.log(response.data)
+          setPosts(response.data.postsWithPresignedUrls);
+          setLoader(false)
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
+
+      GetAllPostsByLikes();
+    }
+    else if(sortBy == "time"){
+      const GetAllPostsByTime = async () => {
+        setLoader(true);
+        setPosts([]);
+        await axios.get(`${url}/post/getpostbytime`,{ withCredentials: true }).then((response) => {
+          console.log(response.data)
+          setPosts(response.data.postsWithPresignedUrls);
+          setLoader(false)
+        }).catch((err) => {
+          console.log(err)
+        })
+      }
+
+      GetAllPostsByTime();
+    }
+    else{
+      const GetAllPosts = async () => {
+       setLoader(true); 
+      await axios.get(`${url}/post/getallposts`).then((response) => {
         console.log(response.data)
         setPosts(response.data.postsWithPresignedUrls);
+        setLoader(false)
       }).catch((err) => {
         console.log(err)
       })
     }
+      GetAllPosts();
+    }
 
     const GetAllReposts = async () => {
-      axios.get("http://localhost:3000/post/getreposts", { withCredentials: true }).then((response) => {
+      axios.get(`${url}/post/getreposts`, { withCredentials: true }).then((response) => {
         setReposts(response.data.postsWithPresignedUrls);
         console.log("Reposts:", response.data.postsWithPresignedUrls)
       }).catch((err) => {
@@ -41,10 +74,9 @@ const Dashboard2 = () => {
       });
     }
 
-    GetAllPosts();
     GetAllReposts();
     console.log("Reposts", Reposts)
-  }, [])
+  }, [sortBy])
 
   return (
     <>
@@ -52,16 +84,22 @@ const Dashboard2 = () => {
       <Container>
         <Sidebar>
           <ProfileInfo />
-
-          <ProfileCard>
-            <Typography variant="body2">Profile viewers: 10</Typography>
-            <Typography variant="body2">Post impressions: 39</Typography>
-          </ProfileCard>
         </Sidebar>
 
         <MainContent>
-
-          <PostComposer />
+         
+         <PostComposer />
+          <Filter>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value as 'top' | 'time')}
+              style={{ padding: "10px", borderRadius: "10px" }}
+            >
+              <option value="none">None</option>
+              <option value="top">Top</option>
+              <option value="time">Time</option>
+            </select>
+          </Filter>
           
           {Reposts.map((ele: any) => {
             console.log('Repost:', ele._id, ele.presignedImages, ele.content);
@@ -101,7 +139,8 @@ const Dashboard2 = () => {
             );
           })}
 
-          {Posts.map((ele: any) => {
+          {Loader?<div>Loading</div>:
+          Posts.map((ele: any) => {
             return <PostItem
               postid={ele._id}
               content={ele.content}
@@ -110,6 +149,7 @@ const Dashboard2 = () => {
               post={ele}
             />
           })}
+
         </MainContent>
 
         <RightSidebar>

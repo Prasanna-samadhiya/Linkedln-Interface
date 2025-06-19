@@ -19,6 +19,7 @@ function CreateNewPassword() {
     const { search } = useLocation();
     const queryParams = new URLSearchParams(search);
     const token = queryParams.get("token");
+    const url = import.meta.env.VITE_BASE_URL;
 
     const navigate = useNavigate()
 
@@ -47,7 +48,7 @@ function CreateNewPassword() {
     const Handleclick = () => {
         if (Err == "") {
             console.log(queryParams.get('token'))
-            axios.post("http://localhost:3000/auth/newp", { ...PasswordData, token: token }, { withCredentials: true }).then((result) => {
+            axios.post(`${url}/auth/newp`, { ...PasswordData, token: token }, { withCredentials: true }).then((result) => {
                 console.log(result);
                 navigate("/login")
             }).catch((err) => {

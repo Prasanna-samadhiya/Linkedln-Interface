@@ -1,4 +1,3 @@
-// components/PostModal.tsx
 import React, { useEffect, useState } from 'react';
 import {
     Dialog,
@@ -24,6 +23,7 @@ const PostModal: React.FC<PostModalProps> = ({ open, handleClose }) => {
     const [content, setContent] = useState('');
     const [images, setImages] = useState<File[]>([]);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const url = import.meta.env.VITE_BASE_URL;
 
     const Link = useSelector((state: RootState) => state.auth.Link);
     const User = useSelector((state: RootState) => state.auth.User);
@@ -48,12 +48,12 @@ const PostModal: React.FC<PostModalProps> = ({ open, handleClose }) => {
         const formData = new FormData();
         formData.append('content', content);
         images.forEach((file) => {
-            formData.append('images', file); // 'images' must match field name on backend
+            formData.append('images', file); 
         });
 
         try {
             const response = await axios.post(
-                'http://localhost:3000/post/newpost',
+                `${url}/post/newpost`,
                 formData,
                 {
                     withCredentials: true,

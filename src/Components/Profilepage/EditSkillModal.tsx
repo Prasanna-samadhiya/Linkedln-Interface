@@ -26,9 +26,10 @@ const EditSkillModal: React.FC<SkillProps> = ({
   onSave,
   skillArr
 }) => {
+
   const [form, setForm] = useState(initialValue);
-  
   const User = useSelector((state: RootState) => state.auth.User);
+  const url = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
     if (open) setForm(initialValue);
@@ -40,15 +41,25 @@ const EditSkillModal: React.FC<SkillProps> = ({
     console.log(e.target.value)
     setForm(e.target.value);
   };
- 
-  const handleSubmit = async(e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const res = await axios.put(`http://localhost:3000/user/updateuser/${User._id}`, { skills:skillArr });
-    console.log(res.data);
-    console.log(form);
-    if (form.trim()) {
-      onSave(form.trim());
+
+    const newSkill = form.trim();
+    if (!newSkill) return;
+
+    const updatedSkills = [...skillArr, newSkill]; 
+
+    try {
+      const res = await axios.put(`${url}/user/updateuser/${User?._id}`, {
+        skills: updatedSkills,
+      }, { withCredentials: true });
+
+      console.log(res.data);
+      onSave(newSkill);
       onClose();
+    } catch (error) {
+      console.error("Failed to update skills", error);
     }
   };
 

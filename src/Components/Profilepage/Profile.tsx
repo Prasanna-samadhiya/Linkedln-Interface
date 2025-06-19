@@ -13,7 +13,7 @@ import {
   FrameOverlay
 } from './Profilestyle';
 
-import { Avatar, Button, Typography } from '@mui/material';
+import { Avatar, Box, Button, Typography } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../Redux/Store/Store';
@@ -34,7 +34,7 @@ import Navbar from '../Navbar/Navbar';
 import EditCoverModal from './ImageModal';
 import OpenToWorkFrame from '../../assets/work.png';
 import HiringFrame from '../../assets/hiring.png';
-import FramedAvatar from '../DashBoard/FrameImage';
+import { useNavigate } from 'react-router-dom';
 
 
 const Profile = () => {
@@ -57,6 +57,8 @@ const Profile = () => {
   const [openNameModal, setOpenNameModal] = useState(false);
   const [openAboutModal, setOpenAboutModal] = useState(false);
   const [openEducationModal, setOpenEducationModal] = useState(false);
+  const navigate = useNavigate();
+  const url = import.meta.env.VITE_BASE_URL;
 
   const dispatch = useDispatch();
 
@@ -71,10 +73,10 @@ const Profile = () => {
     setCertificationsArr(certificationsArr);
     console.log(name, about)
     console.log('Updated experienceArr:', ExperienceArr);
-    console.log(EducationArr);
+    console.log(EducationArr.length);
 
     const GetUserDetails = async () => {
-      await axios.get(`http://localhost:3000/user/getuser/${User?._id}`).then((response) => {
+      await axios.get(`${url}/user/getuser/${User?._id}`).then((response) => {
         console.log(response.data)
         setSkillsArr(response.data.user.skills);
         setCertificationsArr(response.data.user.certification);
@@ -93,8 +95,9 @@ const Profile = () => {
   return (
     <>
       <Navbar />
+      <Box sx={{padding:"40px 0px 0px 100px",backgroundColor:" #f3f1ee ",justifyContent:"center",height:"100%"}}>
       <Container>
-        <CoverPhoto src={Link} alt="Profile" sx={{ width: 1490, height: 400 }}>
+        <CoverPhoto src={Link} alt="Profile" >
           <EditCoverButton startIcon={<EditIcon />}>Edit Cover</EditCoverButton>
         </CoverPhoto>
         <EditCoverModal open={openCoverModal} onClose={() => setOpenCoverModal(false)} />
@@ -116,10 +119,11 @@ const Profile = () => {
         <ProfileInfoSection>
           <Typography variant="h5" fontWeight={600}>
             <SectionTitle>
-              <div>
+              <Typography variant='h4'>
                 {User?.name}
-              </div>
-              <EditIcon sx={{ cursor: 'pointer' }} onClick={() => setOpenNameModal(true)} />
+                <EditIcon sx={{ cursor: 'pointer',mx: "5px" }} onClick={() => setOpenNameModal(true)} />
+              </Typography>
+              
               <EditNameModal
                 open={openNameModal}
                 onClose={() => setOpenNameModal(false)}
@@ -134,11 +138,9 @@ const Profile = () => {
               />
             </SectionTitle>
           </Typography>
-          <Typography variant="subtitle1" color="textSecondary">Frontend Developer at XYZ Corp</Typography>
-
           <ButtonsRow>
-            <Button variant="contained" color="primary">Connect</Button>
-            <Button variant="outlined" color="primary">Message</Button>
+            <Button variant="contained" color="primary" onClick={()=>navigate("/connection")}>Connections</Button>
+            <Button variant="outlined" color="primary" onClick={()=>navigate("/messages")}>Messages</Button>
           </ButtonsRow>
         </ProfileInfoSection>
 
@@ -179,22 +181,30 @@ const Profile = () => {
             />
 
           </SectionTitle>
-          {ExperienceArr ? ExperienceArr.map((ele: any) => {
-            return <Experience
-              title={ele.company}
-              joining={ele.joining}
-              leaving={ele.leaving}
-              description={ele.description}
-            />
+          {ExperienceArr.length != 0 ? 
+            ExperienceArr.map((ele: any) => {
+              return <Experience
+                title={ele.company}
+                joining={ele.joining}
+                leaving={ele.leaving}
+                description={ele.description}
+              />
 
-          }) : <div>No Expriences added</div>}
+            }) 
+            : 
+            <Typography>No Expriences added</Typography>
+          }
         </SectionCard>
 
         <SectionCard>
           <SectionTitle><div>Education</div> <EditIcon onClick={() => setOpenEducationModal(true)} /></SectionTitle>
-          {EducationArr ? EducationArr.map((ele: any) => {
-            return <Education title={ele.title} description={ele.description} />
-          }) : <div>No Education Added</div>}
+          {EducationArr.length !=0 ? 
+              EducationArr.map((ele: any) => {
+                return <Education title={ele.title} description={ele.description} />
+              }) 
+              : 
+              <div>No Education Added</div>
+          }
           <EditEducationModal
             open={openEducationModal}
             onClose={() => setOpenEducationModal(false)}
@@ -208,12 +218,15 @@ const Profile = () => {
         </SectionCard>
         <SectionCard>
           <SectionTitle><div>Certifications</div> <EditIcon onClick={() => setOpenCertificationModal(true)} /></SectionTitle>
-          {certificationsArr.map((cert: any) => (
+          {certificationsArr.length !=0?certificationsArr.map((cert: any) => (
             <Certification
               name={cert.name}
               organisation={cert.organisation}
             />
-          ))}
+          ))
+          :
+          <div>No Certifications Added</div>
+          }
           <EditCertificationModal
             open={openCertificationModal}
             onClose={() => setOpenCertificationModal(false)}
@@ -228,11 +241,14 @@ const Profile = () => {
         <SectionCard>
           <SectionTitle><div>Skills</div> <EditIcon onClick={() => setOpenSkillModal(true)} /></SectionTitle>
           <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-            {skillsArr.map((skill: any) => (
+            {skillsArr.length !=0?skillsArr.map((skill: any) => (
               <Skill
                 name={skill}
               />
-            ))}
+            ))
+            :
+            <div>No Skills Added</div>
+          }
           </div>
           <EditSkillModal
             open={openSkillModal}
@@ -248,6 +264,7 @@ const Profile = () => {
         </SectionCard>
 
       </Container>
+      </Box>
     </>
   );
 };

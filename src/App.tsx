@@ -14,46 +14,50 @@ import Dashboard2 from './Components/DashBoard/DashBoard';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute';
 import NetworkPage from './Components/Network/Network';
 import Connection from './Components/Connection/Connection';
+import Chat from './Components/Chat/Chat';
 
 
 const App: React.FC = () => {
 
-  const dispatch  = useDispatch();
+  const dispatch = useDispatch();
 
-  useEffect(()=>{
-         const allCookies = document.cookie;
-         console.log("cookies:",document.cookie.split("=")[1]);
-         const cookie = allCookies.split("=")[1]  
-         console.log("cookies:",cookie);
-      
-     axios.post("http://localhost:3000/user/userdata",{authtoken:cookie},{withCredentials:true}).then((response)=>{
-         console.log("real data:",response.data)
-         dispatch(loggedinSuccess({User:response.data.user,Link:response.data.presignedurl}))
-     }).catch((err)=>{
-         dispatch(checkifLoggedIn(false))
-         console.log(err)
-     })
-  },[]);
+  useEffect(() => {
+    const allCookies = document.cookie;
+    console.log("cookies:", document.cookie.split("=")[1]);
+    const cookie = allCookies.split("=")[1]
+    const url = import.meta.env.VITE_BASE_URL;
+    console.log("cookies:", cookie);
+    console.log(import.meta.env.VITE_BASE_URL);
+
+    axios.post(`${url}/user/userdata`, { authtoken: cookie }, { withCredentials: true }).then((response) => {
+      console.log("real data:", response.data)
+      dispatch(loggedinSuccess({ User: response.data.user, Link: response.data.presignedurl }))
+    }).catch((err) => {
+      dispatch(checkifLoggedIn(false))
+      console.log(err)
+    })
+  }, []);
 
   return (
-      <div>
+    <div>
       <BrowserRouter>
-         <Routes>
-           <Route path='/' element={<Home/>}/>
-           <Route path='/Register' element={<Register/>}/>
-           <Route path='/login' element={<Login/>}/>
-           <Route path='/Verify' element={<Verify/>}/>
-           <Route element={<ProtectedRoute/>}>
-           <Route path='/profile' element={<Profile/>}/>
-           <Route path='/forgot' element={<Forget/>}/>
-           <Route path='/cpass' element={<CreateNewPassword/>}/>
-           <Route path='/dash' element={<Dashboard2/>}/>
-           <Route path='/network' element={<NetworkPage/>}/>
-           <Route path='/connection' element={<Connection/>}/>
-           </Route>
-         </Routes>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/Register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/Verify' element={<Verify />} />
+          <Route path='/forgot' element={<Forget />} />
+          <Route path='/cpass' element={<CreateNewPassword />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/dash' element={<Dashboard2 />} />
+            <Route path='/network' element={<NetworkPage />} />
+            <Route path='/connection' element={<Connection />} />
+            <Route path='/messages' element={<Chat />} />
+          </Route>
+        </Routes>
       </BrowserRouter>
-      </div>
+    </div>
   );
 };
 

@@ -7,7 +7,7 @@ import HiringFrame from '../../assets/hiring.png';
 interface FramedAvatarProps {
   image: string;
   frame?: string;
-  size?: number; // optional size control
+  size?: number;
 }
 
 const FrameWrapper = styled.div<{ size: number }>`
@@ -25,7 +25,7 @@ const FrameImage = styled.img`
   pointer-events: none;
 `;
 
-const StyledAvatar = styled(Avatar)<{ size: number }>`
+const StyledAvatar = styled(Avatar) <{ size: number }>`
   width: ${({ size }) => size}px !important;
   height: ${({ size }) => size}px !important;
 `;
@@ -34,7 +34,13 @@ const FramedAvatar: React.FC<FramedAvatarProps> = ({ image, frame, size = 48 }) 
   return (
     <FrameWrapper size={size}>
       <StyledAvatar src={image} size={size} />
-      {frame?frame=="open"?<FrameImage src={OpenToWorkFrame} alt="frame" />:<FrameImage src={HiringFrame} alt="frame" />:<></>}
+      {frame ? (
+        frame === "open" ? (
+          <FrameImage src={OpenToWorkFrame} alt="frame" />
+        ) : frame === "hiring" ? (
+          <FrameImage src={HiringFrame} alt="frame" />
+        ) : null
+      ) : null}
     </FrameWrapper>
   );
 };

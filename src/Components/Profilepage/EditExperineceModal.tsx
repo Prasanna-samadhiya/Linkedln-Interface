@@ -37,9 +37,10 @@ const EditExperienceModal: React.FC<ExperienceProps> = ({
   onSave,
   experienceArr
 }) => {
+  
   const [form, setForm] = useState(initialValue);
-
   const User = useSelector((state: RootState) => state.auth.User);
+  const url = import.meta.env.VITE_BASE_URL;
 
   const handleChange = (field: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [field]: e.target.value });
@@ -49,7 +50,7 @@ const EditExperienceModal: React.FC<ExperienceProps> = ({
     e.preventDefault();
     experienceArr.push(form);
     console.log("Experience:",experienceArr);
-    const res = await axios.put(`http://localhost:3000/user/updateuser/${User?._id}`, { experience:experienceArr });
+    const res = await axios.put(`${url}/user/updateuser/${User?._id}`, { experience:experienceArr });
     console.log(res.data);
     onSave(form);
     onClose();

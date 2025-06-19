@@ -1,14 +1,5 @@
-import {
-  Box,
-  Typography,
-} from "@mui/material";
-import {
-  PageContainer,
-  Sidebar,
-  MainContent,
-  SidebarItem,
-  SuggestionList,
-} from "./NetworkStyle";
+import { Box,Typography} from "@mui/material";
+import { PageContainer,MainContent,SuggestionList,InvitationCard,PeopleContainer} from "./NetworkStyle";
 import ShowUser from "./ShowUser/ShowUser";
 import Navbar from "../Navbar/Navbar";
 import { useEffect, useState } from "react";
@@ -16,22 +7,26 @@ import axios from "axios";
 import type { RootState } from "../../Redux/Store/Store";
 import { useSelector } from "react-redux";
 import Request from "./Request";
+import Animation from "./Animation";
+import NetworkSiderbar from "./NetworkSiderbar";
 
 const NetworkPage = () => {
 
   const User = useSelector((state: RootState) => state.auth.User);
   const [user, setUser] = useState([]);
   const [requests, setRequests] = useState([]);
+  const url = import.meta.env.VITE_BASE_URL;
+  
 
   useEffect(() => {
     async function GetAllUsers() {
-      const res = await axios.get(`http://localhost:3000/connection/getnetworkuser/${User?._id}`);
+      const res = await axios.get(`${url}/connection/getnetworkuser/${User?._id}`);
       console.log(res.data);
-      setUser(res.data.temp)
+      setUser(res.data.temp);
     }
 
     async function GetAllRequests() {
-      const res = await axios.get(`http://localhost:3000/connection/getrequests/${User?._id}`);
+      const res = await axios.get(`${url}/connection/getrequests/${User?._id}`);
       console.log(res.data);
       setRequests(res.data.newUsers);
     }
@@ -44,26 +39,18 @@ const NetworkPage = () => {
     <>
       <Navbar />
       <PageContainer>
-        <Sidebar>
-          <Typography variant="h6" fontWeight="bold" mb={2}>
-            Manage my network
-          </Typography>
-          <SidebarItem>👥 Connections <b>895</b></SidebarItem>
-          <SidebarItem>📒 Contacts <b>193</b></SidebarItem>
-          <SidebarItem>👤 Following & followers</SidebarItem>
-          <SidebarItem>👥 Groups</SidebarItem>
-          <SidebarItem>📅 Events <b>2</b></SidebarItem>
-          <SidebarItem>📄 Pages <b>59</b></SidebarItem>
-          <SidebarItem>📰 Newsletters <b>3</b></SidebarItem>
-        </Sidebar>
+        <NetworkSiderbar/>
 
         <MainContent>
           <Box mb={4}>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
-              Invitations (2)
+              Invitations ({requests.length})
             </Typography>
 
-            {requests.map((ele: any) => {
+            {requests.length==0?
+            <InvitationCard>No pending Invitations</InvitationCard>
+            :
+            requests.map((ele: any) => {
               return <Request
                 name={ele.name}
                 des={ele.description}
@@ -75,13 +62,16 @@ const NetworkPage = () => {
             })}
           </Box>
 
-          <Box>
+          <PeopleContainer>
             <Typography variant="h6" fontWeight="bold" gutterBottom>
               People you may know
             </Typography>
 
             <SuggestionList>
-              {user?.map((id: any) => (
+              {user.length==0?
+              <Animation/>
+              :
+              user?.map((id: any) => (
                 <ShowUser
                   id={id._id}
                   name={id.name}
@@ -93,7 +83,7 @@ const NetworkPage = () => {
                 />
               ))}
             </SuggestionList>
-          </Box>
+          </PeopleContainer>
         </MainContent>
       </PageContainer>
     </>

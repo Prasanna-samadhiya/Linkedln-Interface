@@ -97,6 +97,10 @@ export const AdCard = styled.div`
   border-radius: 0.5rem;
   text-align: center;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const RetryButton = styled.button`

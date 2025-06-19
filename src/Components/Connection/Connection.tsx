@@ -3,7 +3,6 @@ import Navbar from "../Navbar/Navbar";
 import {
   Container,
   ConnectionCard,
-  AvatarImage,
   UserInfo,
   Name,
   Description,
@@ -19,6 +18,7 @@ import {
 import axios from "axios";
 import type { RootState } from "../../Redux/Store/Store";
 import { useSelector } from "react-redux";
+import FramedAvatar from "../DashBoard/FrameImage";
 
 // const connections = [
 //   {
@@ -64,59 +64,98 @@ import { useSelector } from "react-redux";
 const Connection = () => {
 
   const User = useSelector((state: RootState) => state.auth.User);
+  const Link = useSelector((state: RootState) => state.auth.Link);
+  const [search, setSearch] = useState("");
   const [user, setUser] = useState([]);
+  const [searcheduser, setSearchedUser] = useState([]);
+  const url = import.meta.env.VITE_BASE_URL;
 
   async function GetAllUsers() {
-      const res = await axios.get(`http://localhost:3000/connection/getnetworkuser/${User?._id}`);
-      console.log(res.data);
-      setUser(res.data.temp)
-    }
+    const res = await axios.get(`${url}/connection/showconnections/${User?._id}`);
+    console.log(res.data);
+    setUser(res.data.connections);
+  }
 
-  useEffect(()=>{
-     
-    
+  function HandleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value.toLowerCase();
+    setSearch(value);
+  
+    console.log(e.target.value);
+    if (e.target.value === "") {
+      setSearchedUser([]);
+      return;
+    }
+       
+    let temp = [...user];
+   
+    temp = temp.filter((ele: any) =>{
+      console.log(ele.name.toLowerCase().includes(value),"ele")
+      if(ele.name.toLowerCase().includes(value)){
+        return true
+      }else{
+        return false
+      }}
+    );
+     console.log(temp,"temp")
+    setSearchedUser([...temp]);
+   
+  }
+
+   console.log(searcheduser,"searched");
+  useEffect(() => {
+
+
     GetAllUsers();
-  },[])
+  }, [])
 
   return (
     <>
-    <Navbar/>
-    <Container>
-      <ConnectionsContainer>
-        <h2>896 connections</h2>
-        <SortBar>
-          <span>Sort by: Recently added ▾</span>
-          <SearchInput type="text" placeholder="Search by name" />
-          <a href="#">Search with filters</a>
-        </SortBar>
+      <Navbar />
+      <Container>
+        <ConnectionsContainer>
+          <h2>{User?.connections.length} Connections</h2>
+          <SortBar>
+            <span>Sort by: Recently added ▾</span>
+            <SearchInput type="text" placeholder="Search by name" onChange={HandleChange} />
+            <a href="#">Search with filters</a>
+          </SortBar>
 
-        {user.map((user:any, index) => (
-          <ConnectionCard key={index}>
-            <AvatarImage src={user.image} alt={user.name} />
-            <UserInfo>
-              <Name>{user.name}</Name>
-              <Description>{user.description}</Description>
-              <Meta>connected on {user.connectedDate}</Meta>
-            </UserInfo>
-            <MessageButton>Message</MessageButton>
-          </ConnectionCard>
-        ))}
-      </ConnectionsContainer>
+          {  search === ""?
+            user.map((user: any, index) => (
+              <ConnectionCard key={index}>
+                <FramedAvatar image={user.image} frame={User?.status} size={60} />
+                <UserInfo>
+                  <Name>{user.name}</Name>
+                  <Description>{user.description}</Description>
+                  <Meta>connected</Meta>
+                </UserInfo>
+                <MessageButton>Message</MessageButton>
+              </ConnectionCard>
+            )) :
+            searcheduser.map((user: any, index) => (
+              <ConnectionCard key={index}>
+                <FramedAvatar image={user.image} frame={User?.status} size={60} />
+                <UserInfo>
+                  <Name>{user.name}</Name>
+                  <Description>{user.description}</Description>
+                  <Meta>connected</Meta>
+                </UserInfo>
+                <MessageButton>Message</MessageButton>
+              </ConnectionCard>
+            ))
+          }
+        </ConnectionsContainer>
 
-      <RightPanel>
-        <AdCard>
-          <img
-            src="/images/profile.jpg"
-            alt="Profile"
-            style={{ borderRadius: "50%", width: 60, height: 60 }}
-          />
-          <p>
-            See who’s viewed your profile in the last <b>365</b> days
-          </p>
-          <RetryButton>Retry for free!</RetryButton>
-        </AdCard>
-      </RightPanel>
-    </Container>
+        <RightPanel>
+          <AdCard>
+            <FramedAvatar image={Link} frame={User?.status} size={60} />
+            <p>
+              See who’s viewed your profile in the last <b>365</b> days
+            </p>
+            <RetryButton>Retry for free!</RetryButton>
+          </AdCard>
+        </RightPanel>
+      </Container>
     </>
   );
 };

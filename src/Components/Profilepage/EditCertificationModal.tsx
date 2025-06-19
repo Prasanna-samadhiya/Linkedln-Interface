@@ -22,7 +22,7 @@ interface CertificationProps {
     name: string;
     organisation: string;
   }) => void;
-  certificationArr:any;
+  certificationArr: any;
 
 }
 
@@ -35,6 +35,7 @@ const EditCertificationModal: React.FC<CertificationProps> = ({
 }) => {
   const [form, setForm] = useState(initialValue);
   const User = useSelector((state: RootState) => state.auth.User);
+  const url = import.meta.env.VITE_BASE_URL;
 
 
 
@@ -42,18 +43,25 @@ const EditCertificationModal: React.FC<CertificationProps> = ({
     setForm({ ...form, [field]: e.target.value });
   };
 
-  
-  
 
-  const handleSubmit = async(e: React.FormEvent) => {
+
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    certificationArr = certificationArr.push(form);
-    console.log(certificationArr)
-    await axios.put(`http://localhost:3000/user/updateuser/${User?._id}`, { certification:certificationArr }).
-        then((res)=>{console.log(res.data);}).
-        catch((err)=>{console.log(err)})
-    onSave(form);
-    onClose();
+
+    const updatedCertifications = [...certificationArr, form]; 
+    console.log(updatedCertifications);
+
+    try {
+      await axios.put(`${url}/user/updateuser/${User?._id}`, {
+        certification: updatedCertifications,
+      }, { withCredentials: true });
+
+      onSave(form);
+      onClose();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

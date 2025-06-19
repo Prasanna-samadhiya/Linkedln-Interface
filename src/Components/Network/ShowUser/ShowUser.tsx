@@ -36,11 +36,12 @@ const ShowUser: React.FC<ShowUserProps> = ({
 }) => {
 
   const User = useSelector((state: RootState) => state.auth.User);
-  const [ispending,setisPending] = useState(false)
+  const [ispending,setisPending] = useState(false);
+  const url = import.meta.env.VITE_BASE_URL;
 
   const HandleClick = async()=>{
         try {
-          const res = await axios.post(`http://localhost:3000/connection/sendrequest/${User?._id}`,{recipientId:id});   
+          const res = await axios.post(`${url}/connection/sendrequest/${User?._id}`,{recipientId:id});   
           console.log(res.data);
           setisPending(true);
         } catch (error) {
@@ -50,9 +51,9 @@ const ShowUser: React.FC<ShowUserProps> = ({
 
   useEffect(()=>{
       if(button=="pending"){
-        setisPending(false);
-      }else{
         setisPending(true);
+      }else{
+        setisPending(false);
       }
   },[])
 

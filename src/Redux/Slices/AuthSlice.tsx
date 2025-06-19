@@ -84,7 +84,7 @@ export const AuthSlice = createSlice({
     updateUserField(state, action) {
       const { field, value } = action.payload;
       if (state.User) {
-        state.User[field] = value;
+        (state.User as any)[field] = value;
       }
     },
     checkifLoggedIn(state, action) {

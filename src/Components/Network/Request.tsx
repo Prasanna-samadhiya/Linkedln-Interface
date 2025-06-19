@@ -15,14 +15,15 @@ interface Props {
 function Request(props: Props) {
   const { name, des, image, id, removeRequest } = props;
   const User = useSelector((state: RootState) => state.auth.User);
+  const url = import.meta.env.VITE_BASE_URL;
 
   const HandleAccept = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:3000/connection/confirmconnection/${User?._id}/${id}`
+        `${url}/connection/confirmconnection/${User?._id}/${id}`
       );
       console.log(res.data);
-      removeRequest(id); // 👈 Remove from UI
+      removeRequest(id); 
     } catch (error) {
       console.log("Error:", error);
     }
@@ -31,7 +32,7 @@ function Request(props: Props) {
   const HandleIgnore = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:3000/connection/rejectconnection/${User?._id}/${id}`
+        `${url}/connection/rejectconnection/${User?._id}/${id}`
       );
       console.log(res.data);
       removeRequest(id); // 👈 Remove from UI

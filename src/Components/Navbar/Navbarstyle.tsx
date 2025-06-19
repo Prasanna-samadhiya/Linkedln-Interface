@@ -27,9 +27,9 @@ export const LogoBox = styled(Box)({
   gap: '10px',
 });
 
-export const SearchBox = styled('div')(({ theme }) => ({
+export const SearchBox = styled('div')(() => ({
   position: 'relative',
-  borderRadius: theme.shape.borderRadius,
+  borderRadius: '20px',
   backgroundColor: alpha('#eef3f8', 1),
   '&:hover': {
     backgroundColor: alpha('#dce6f1', 1),

@@ -10,6 +10,9 @@ import type { RootState } from "../../Redux/Store/Store";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import FramedAvatar from "./FrameImage";
+import SendIcon from '@mui/icons-material/Send';
+import SentModal from "./SentModal/SentModal";
+
 
 interface PostItemProps {
   postid: string
@@ -30,15 +33,20 @@ function PostItem({ postid, content, presignedImages, Likes, post }: PostItemPro
   const [deleted, setDelete] = useState(false);
   const [ShowLikes, setShowLikes] = useState(false);
   const [reposted, setReposted] = useState(false);
+  const [openSentModal, setOpenSentModal] = useState(false);
   const [LikeArr, setLikeArr] = useState(Likes);
+  const [user,setUser] = useState([]);
+  const [LikesLength, setLikesLength] = useState(Likes.length);
+  const url = import.meta.env.VITE_BASE_URL;
 
   const Handleclicked = async () => {
     console.log("hi", postid)
     try {
-      const res = await axios.put(`http://localhost:3000/post/like/${postid}`, { userId: User?._id }, { withCredentials: true })
+      const res = await axios.put(`${url}/post/like/${postid}`, { userId: User?._id }, { withCredentials: true })
       console.log(res.data.post.likes)
       setLikeArr(res.data.post.likes)
       console.log(res.data.post.likes.length)
+      setLikesLength(res.data.post.likes.length)
       if (res.data.post.likes.length == 0) {
         setLiked(false)
       } else {
@@ -49,15 +57,33 @@ function PostItem({ postid, content, presignedImages, Likes, post }: PostItemPro
     }
   }
 
+  async function GetAllUsers() {
+    try {
+      const res = await axios.get(
+        `http://localhost:3000/connection/showconnections/${User?._id}`
+      );
+      setUser(res.data.connections);
+    } catch (err) {
+      console.error("Failed to fetch users", err);
+    }
+  }
+
   const HandleChange = (e: any) => {
     setText(e.target.value);
   }
 
   const HandleCommentClicked = async () => {
     try {
-      const res = await axios.put(`http://localhost:3000/post/comment/${postid}`, { userid: User?._id, message: text }, { withCredentials: true })
-      console.log("Comments:", res.data.comments);
-      setCommetArr(res.data.comments);
+      const res = await axios.put(`${url}/post/comment/${postid}`, { userid: User?._id, message: text }, { withCredentials: true })
+
+      console.log("Updated Comments:", res.data.comments);
+
+      const resc = await axios.get(`${url}/post/getcomments/${postid}`, {
+        withCredentials: true
+      });
+
+      console.log("Updated Comments:", resc.data.comments);
+      setCommetArr(resc.data.comments);
     } catch (err) {
       console.log(err)
     }
@@ -65,7 +91,7 @@ function PostItem({ postid, content, presignedImages, Likes, post }: PostItemPro
 
   const HandleRepost = async () => {
     try {
-      const res = await axios.post(`http://localhost:3000/post/createrepost/${postid}`, {}, { withCredentials: true })
+      const res = await axios.post(`${url}/post/createrepost/${postid}`, {}, { withCredentials: true })
       console.log(res.data)
       setReposted(true)
     } catch (error) {
@@ -75,7 +101,7 @@ function PostItem({ postid, content, presignedImages, Likes, post }: PostItemPro
 
   const HandleDelete = async (ele: string) => {
     try {
-      const res = await axios.delete(`http://localhost:3000/post/deletecomments/${postid}/${ele}`, { withCredentials: true });
+      const res = await axios.delete(`${url}/post/deletecomments/${postid}/${ele}`, { withCredentials: true });
       console.log(res.data)
       setDelete(!deleted)
     } catch (error) {
@@ -83,30 +109,45 @@ function PostItem({ postid, content, presignedImages, Likes, post }: PostItemPro
     }
   }
 
+  const HandleSent = async () => {
+    try {
+      console.log("sent")
+      setOpenSentModal(true);
+    } catch (error) {
+
+    }
+  }
+
+
   useEffect(() => {
-    if (LikeArr.some((ele: string) => ele == User?._id)) {
+    const initialLikes = post.likes?.map((like: any) => like._id);
+    setLikeArr(initialLikes);
+
+    if(1==1) console.log(LikeArr);
+
+    if (initialLikes?.includes(User?._id)) {
       setLiked(true);
     } else {
-      setLiked(false)
+      setLiked(false);
     }
 
-     console.log("post",post)
     async function GetComments() {
-      const res = await axios.get(`http://localhost:3000/post/getcomments/${postid}`, { withCredentials: true })
-      console.log(res.data.comments);
-      setCommetArr(res.data.comments)
+      const res = await axios.get(`${url}/post/getcomments/${postid}`, { withCredentials: true });
+      setCommetArr(res.data.comments);
     }
 
     GetComments();
-
-    console.log(Liked, LikeArr.some((ele: string) => ele == User?._id) ? true : false);
-  }, [Liked, deleted, reposted]);
+    GetAllUsers()
+  }, [deleted, reposted]);
 
   return (
     <PostCard>
       <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
         <FramedAvatar image={post.userid?.image || ''} frame={post.userid?.status || ''} size={56} />
-        <Typography>{post.userid?.name}</Typography>
+        <Box sx={{ display: "flex", flexDirection: "column" }}>
+          <Typography>{post.userid?.name}</Typography>
+          <Typography><em>{post.userid?.description}</em></Typography>
+        </Box>
       </div>
       <Typography variant="subtitle1" m={3}>
         {content}
@@ -123,7 +164,7 @@ function PostItem({ postid, content, presignedImages, Likes, post }: PostItemPro
             variant="outlined"
             startIcon={<FavoriteIcon style={{ color: "red" }} />}
             onClick={Handleclicked}>
-            Liked
+            Liked {LikesLength}
           </Button>
           :
           <Button
@@ -131,7 +172,7 @@ function PostItem({ postid, content, presignedImages, Likes, post }: PostItemPro
             variant="outlined"
             startIcon={<FavoriteIcon />}
             onClick={Handleclicked}>
-            Like
+            Like {LikesLength}
           </Button>}
         {reposted ?
           <Button
@@ -156,6 +197,19 @@ function PostItem({ postid, content, presignedImages, Likes, post }: PostItemPro
           onClick={() => setShowComment(!ShowComment)}>
           Comment
         </Button>
+        <Button
+          size="small"
+          variant="outlined"
+          startIcon={<SendIcon />}
+          onClick={HandleSent}>
+          Send
+        </Button>
+        <SentModal
+          open={openSentModal}
+          name={post.userid.name}
+          onClose={() => setOpenSentModal(false)}
+          users={user}
+        />
       </Box>
       <Typography
         variant="body2"

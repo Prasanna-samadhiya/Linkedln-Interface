@@ -8,6 +8,7 @@ function Forget() {
     
     const [Email, SetEmail] = useState<string>("")
     const [Err, SetErr] = useState<string>("")
+    const url = import.meta.env.VITE_BASE_URL;
 
     const navigate = useNavigate()
 
@@ -28,7 +29,7 @@ function Forget() {
 
     const Handleclick = () => {
         if (Err == "") {
-            axios.post("http://localhost:3000/auth/forget", { email: Email }, { withCredentials: true }).then((result) => {
+            axios.post(`${url}/auth/forget`, { email: Email }, { withCredentials: true }).then((result) => {
                 const params = new URLSearchParams({ token: result.data.user.token });
                 console.log(result.data.user.token);
                 navigate(`/cpass?${params.toString()}`);

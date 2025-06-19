@@ -19,13 +19,12 @@ const EditNameModal: React.FC<Props> = ({ open, onClose, initialValue, onSave })
   const [value, setValue] = React.useState(initialValue);
  
   const User = useSelector((state: RootState) => state.auth.User);
-   
-
-
+  const url = import.meta.env.VITE_BASE_URL;
+  
   const handleSubmit = async(e: React.FormEvent) => {
     try{
         e.preventDefault();
-        const res = await axios.put(`http://localhost:3000/user/updateuser/${User._id}`,  {name:value} );
+        const res = await axios.put(`${url}/user/updateuser/${User?._id}`,  {name:value} );
         console.log(res.data);
         onSave(value);
         onClose();

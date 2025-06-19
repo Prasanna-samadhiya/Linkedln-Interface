@@ -22,6 +22,7 @@ function Register() {
   });
   const [Err, setErr] = useState<string>();
   const [Registered, setRegistered] = useState<boolean>(false);
+  const url = import.meta.env.VITE_BASE_URL;;
 
   useEffect(() => {
     if (Rdata.name === "" || Rdata.email === "" || Rdata.password === "" || Rdata.cpassword === "") {
@@ -68,9 +69,8 @@ function Register() {
       }
 
       try {
-        const result = await axios.post("http://localhost:3000/auth/register", formData, {
-          withCredentials: true
-        });
+        const result = await axios.post(`${url}/auth/register`, formData, {withCredentials: true });
+       
         console.log(result);
         setRegistered(true);
         navigate("/verify");

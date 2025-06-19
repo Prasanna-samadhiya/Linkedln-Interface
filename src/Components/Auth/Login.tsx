@@ -17,6 +17,7 @@ function Login() {
     const [LoginData, SetLdata] = useState<LoginDataType>({ email: "", password: "" })
     const [Err, SetErr] = useState<string>("")
     const [LoggedIn, SetLogged] = useState<boolean>(false)
+    const url = import.meta.env.VITE_BASE_URL;
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -37,7 +38,7 @@ function Login() {
 
     const HandleClick = () => {
         if (Err == "") {
-            axios.post("http://localhost:3000/auth/login", LoginData, { withCredentials: true }).then((result) => {
+            axios.post(`${url}/auth/login`, LoginData, { withCredentials: true }).then((result) => {
                 console.log(result);
                 SetLogged(true);
                 dispatch(loggedinSuccess({LoggedIn:true,User:result.data.user,Link:result.data.link}));

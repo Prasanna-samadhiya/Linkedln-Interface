@@ -6,7 +6,8 @@ interface TopImageProps {
 }
 
 export const CardContainer = styled(Box)`
-  width: 220px;
+  width: 190px;
+  height: 300px;
   position: relative;
   background-color: white;
   border-radius: 12px;
