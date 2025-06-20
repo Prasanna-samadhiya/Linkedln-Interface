@@ -1,4 +1,3 @@
-// dashboardstyle.tsx
 import { styled } from '@mui/material/styles';
 import { Box, Avatar, Button, Paper } from '@mui/material';
 
